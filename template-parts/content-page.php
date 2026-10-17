@@ -1,19 +1,20 @@
 <?php
 /**
- * Template part for displaying page content in page.php
+ * Template part for regular page content.
  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package sinapsis-theme
+ * @package sinapsis_theme
  */
-
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-entry container-fluid' ); ?>>
 	<header class="entry-header">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-	</header><!-- .entry-header -->
+	</header>
+	<div class="entry-content py-3">
+		<?php the_content(); ?>
+	</div>
 
+<<<<<<< HEAD
 	<?php sinapsis_theme_post_thumbnail(); ?>
 
 	<div class="entry-content">
@@ -50,5 +51,9 @@
 			);
 			?>
 		</footer><!-- .entry-footer -->
+=======
+	<?php if ( comments_open() || get_comments_number() ) : ?>
+		<?php comments_template(); ?>
+>>>>>>> 4e22ea193498e9fecc1939701d6c5cff643b7658
 	<?php endif; ?>
-</article><!-- #post-<?php the_ID(); ?> -->
+</article>
