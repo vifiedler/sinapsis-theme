@@ -2,8 +2,9 @@
 // ah, creo que era el de musica
 
 document.addEventListener('dragstart', function(e) {
-    var caja = e.target.closest('.library-card');
+    var caja = e.target.closest('.library-item');
     if (caja) {
+        console.log("Arrastrando tarjeta:", caja);
         e.dataTransfer.setData('text/plain', JSON.stringify({
             id: caja.getAttribute('data-id'),
             nombre: caja.getAttribute('data-nombre')
@@ -14,7 +15,7 @@ document.addEventListener('dragstart', function(e) {
 });
 
 document.addEventListener('dragend', function(e) {
-    var caja = e.target.closest('.library-card');
+    var caja = e.target.closest('.library-item');
     if (caja) {
         caja.style.opacity = '1';
     }
@@ -32,7 +33,7 @@ document.addEventListener('dragover', function(e) {
 document.addEventListener('dragleave', function(e) {
     var zona = e.target.closest('#zona-favoritos');
     if (zona) {
-        zona.style.borderColor = '';
+        zona.style.borderColor = '#444';
         zona.style.backgroundColor = '';
     }
 });
@@ -41,7 +42,7 @@ document.addEventListener('drop', function(e) {
     var zona = e.target.closest('#zona-favoritos');
     if (zona) {
         e.preventDefault();
-        zona.style.borderColor = '';
+        zona.style.borderColor = '#444';
         zona.style.backgroundColor = '';
         
         var dataString = e.dataTransfer.getData('text/plain');
@@ -66,27 +67,8 @@ document.addEventListener('drop', function(e) {
                 favoritos.push({ id: data.id, nombre: data.nombre });
                 localStorage.setItem('bd_favoritos', JSON.stringify(favoritos));
             }
-        } catch (err) {}
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var zona = document.getElementById('zona-favoritos');
-    if (zona) {
-        var favoritos = JSON.parse(localStorage.getItem('bd_favoritos')) || [];
-        if (favoritos.length > 0) {
-            var textosVacios = zona.querySelectorAll('.texto-vacio');
-            textosVacios.forEach(function(t) { t.style.display = 'none'; });
-            
-            favoritos.forEach(function(f) {
-                if (!zona.querySelector('[data-id="' + f.id + '"]')) {
-                    var el = document.createElement('div');
-                    el.className = 'favorito-item';
-                    el.setAttribute('data-id', f.id);
-                    el.innerText = f.nombre;
-                    zona.appendChild(el);
-                }
-            });
+        } catch (err) {
+            console.error("Error en drop:", err);
         }
     }
 });
