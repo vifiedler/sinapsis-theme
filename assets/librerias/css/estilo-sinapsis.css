@@ -1,3 +1,32 @@
-h1{
-    font-size: 64px;
+.library-grid {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.library-card {
+	border: 1px solid #ddd;
+	border-radius: 0.5rem;
+	overflow: hidden;
+}
+
+.library-card__image {
+	display: block;
+}
+
+.library-card__image img {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+.library-card__content {
+	padding: 1.25rem;
+}
+
+.library-card__difficulty {
+	display: inline-block;
+	font-size: 0.875rem;
+	font-weight: 600;
+	margin-bottom: 0.75rem;
 }
