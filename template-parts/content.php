@@ -28,7 +28,7 @@
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
-
+aaaaaaaaaaaaaaaaaaaaaa
 	<?php sinapsis_theme_post_thumbnail(); ?>
 
 	<div class="entry-content">
