@@ -22,6 +22,7 @@
 			?>
 		</div>
 	</footer><!-- #colophon -->
+</div><!-- .library-shell -->
 </div><!-- #page -->
 
 <?php wp_footer(); ?>

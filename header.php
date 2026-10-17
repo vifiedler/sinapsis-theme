@@ -25,35 +25,54 @@
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'sinapsis_theme' ); ?></a>
 
-	<header id="masthead" class="site-header">
-		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$sinapsis_theme_description = get_bloginfo( 'description', 'display' );
-			if ( $sinapsis_theme_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $sinapsis_theme_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
+	<aside class="library-sidebar" aria-label="<?php esc_attr_e( 'Filtros y favoritos', 'sinapsis_theme' ); ?>">
+		<div class="library-sidebar__brand">
+			<span class="library-sidebar__mark">∎</span>
+			<span><?php esc_html_e( 'REGISTRY // FILTERS', 'sinapsis_theme' ); ?></span>
+		</div>
 
-		<nav id="site-navigation" class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'sinapsis_theme' ); ?>">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'sinapsis_theme' ); ?></button>
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
-				)
-			);
-			?>
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
+		<form class="library-search" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<label class="screen-reader-text" for="library-search"><?php esc_html_e( 'Buscar en la biblioteca', 'sinapsis_theme' ); ?></label>
+			<input id="library-search" type="search" name="s" placeholder="<?php esc_attr_e( 'Buscar librería o función...', 'sinapsis_theme' ); ?>">
+		</form>
+
+		<nav class="library-sidebar__nav" aria-label="<?php esc_attr_e( 'Navegación de biblioteca', 'sinapsis_theme' ); ?>">
+			<span class="library-sidebar__label"><?php esc_html_e( '01. Arquitectura & Stack', 'sinapsis_theme' ); ?></span>
+			<a class="is-active" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Todos los módulos', 'sinapsis_theme' ); ?><b>06</b></a>
+			<a href="#masonry"><?php esc_html_e( 'JS nativo moderno', 'sinapsis_theme' ); ?><b>03</b></a>
+			<a href="#datatables"><?php esc_html_e( 'jQuery plugins', 'sinapsis_theme' ); ?><b>03</b></a>
+
+			<span class="library-sidebar__label"><?php esc_html_e( '02. Clasificación técnica', 'sinapsis_theme' ); ?></span>
+			<a href="#masonry"><span><?php esc_html_e( 'Layout & Estructura', 'sinapsis_theme' ); ?><small>Masonry, Swiper, Slick</small></span></a>
+			<a href="#datatables"><span><?php esc_html_e( 'Display & Efectos', 'sinapsis_theme' ); ?><small>DataTables, Chart.js</small></span></a>
+		</nav>
+
+		<div class="favorite-dropzone">
+			<span class="library-sidebar__label"><?php esc_html_e( 'Favoritos del usuario', 'sinapsis_theme' ); ?></span>
+			<div class="favorite-dropzone__box">
+				<strong><?php esc_html_e( 'Arrastra aquí', 'sinapsis_theme' ); ?></strong>
+				<span><?php esc_html_e( 'Tus scripts y librerías favoritas', 'sinapsis_theme' ); ?></span>
+			</div>
+			<ul class="favorite-list">
+				<li><span class="status-dot"></span> wp_enqueue_script</li>
+				<li><span class="status-dot status-dot--violet"></span> DataTables</li>
+			</ul>
+		</div>
+
+		<a class="library-user-link" href="<?php echo esc_url( home_url( '/usuario/' ) ); ?>">
+			<span class="user-avatar">VF</span>
+			<span><strong><?php esc_html_e( 'Mi espacio', 'sinapsis_theme' ); ?></strong><small><?php esc_html_e( 'Ver perfil y guardados', 'sinapsis_theme' ); ?></small></span>
+		</a>
+	</aside>
+
+	<div class="library-shell">
+		<header id="masthead" class="library-topbar">
+			<div>
+				<span class="library-topbar__path">WP // CODEX UI <em>v1.0</em></span>
+				<span class="library-topbar__connection">● REST READY</span>
+			</div>
+			<nav id="site-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'sinapsis_theme' ); ?>">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Catálogo', 'sinapsis_theme' ); ?></a>
+				<a href="<?php echo esc_url( home_url( '/usuario/' ) ); ?>"><?php esc_html_e( 'Usuario', 'sinapsis_theme' ); ?></a>
+			</nav>
+		</header>
