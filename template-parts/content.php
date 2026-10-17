@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package breakdownmusic-theme
+ * @package sinapsis-theme
  */
 
 ?>
@@ -22,14 +22,14 @@
 			?>
 			<div class="entry-meta">
 				<?php
-				breakdownmusic_theme_posted_on();
-				breakdownmusic_theme_posted_by();
+				sinapsis_theme_posted_on();
+				sinapsis_theme_posted_by();
 				?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php breakdownmusic_theme_post_thumbnail(); ?>
+	<?php sinapsis_theme_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
@@ -37,7 +37,7 @@
 			sprintf(
 				wp_kses(
 					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'breakdownmusic-theme' ),
+					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'sinapsis-theme' ),
 					array(
 						'span' => array(
 							'class' => array(),
@@ -50,7 +50,7 @@
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'breakdownmusic-theme' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sinapsis-theme' ),
 				'after'  => '</div>',
 			)
 		);
@@ -58,6 +58,6 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php breakdownmusic_theme_entry_footer(); ?>
+		<?php sinapsis_theme_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
