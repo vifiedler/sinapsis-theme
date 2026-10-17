@@ -31,8 +31,8 @@ $demo_items = array(
 		<details id="<?php echo esc_attr( $item['id'] ); ?>" class="library-item col-12 col-md-6 col-xl-4" draggable="true" data-id="<?php echo esc_attr( $item['id'] ); ?>" data-nombre="<?php echo esc_attr( $item['name'] ); ?>">
     	<summary class="library-card d-flex flex-column">
 	<!--hasta aki -->	
-	
-			<div class="library-card__meta d-flex justify-content-between align-items-center"><span class="module-id">MOD-<?php echo esc_html( strtoupper( substr( $item['id'], 0, 2 ) ) ); ?></span><span class="library-type"><?php echo esc_html( $item['type'] ); ?></span></div>
+
+			<div class="library-card__meta d-flex justify-content-between align-items-center"><span class="module-id">MOD UWUUUUUUUUUUUUUU-<?php echo esc_html( strtoupper( substr( $item['id'], 0, 2 ) ) ); ?></span><span class="library-type"><?php echo esc_html( $item['type'] ); ?></span></div>
 				<h2 class="mt-4"><?php echo esc_html( $item['name'] ); ?></h2>
 				<div class="library-card__level"><span>NIVEL:</span> <?php echo esc_html( $item['level'] ); ?></div>
 				<p><?php echo esc_html( $item['description'] ); ?></p>
