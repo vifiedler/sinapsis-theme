@@ -1,88 +1,117 @@
 //estoy segur que ya existia??? but aqui esta de nuevo xd
 // ah, creo que era el de musica
 
-(function ($) {
-    'use strict';
+document.addEventListener('DOMContentLoaded', function() {
 
-    function initDragAndDrop() {
-        if ($('.tarjeta-libreria').length > 0) {
-            if ($('.tarjeta-libreria').hasClass('ui-draggable')) {
-                $('.tarjeta-libreria').draggable('destroy');
-            }
+    function inicializarDragAndDrop() {
+        const tarjetas = document.querySelectorAll('.tarjeta-libreria');
+        const zona = document.getElementById('zona-favoritos');
+
+        if (tarjetas.length === 0 || !zona) return;
+
+        tarjetas.forEach(tarjeta => {
+            tarjeta.setAttribute('draggable', 'true');
             
-            $('.tarjeta-libreria').draggable({
-                helper: 'clone',
-                revert: 'invalid',
-                cursor: 'move',
-                appendTo: 'body',
-                zIndex: 9999
+      
+            if (tarjeta.dataset.dragReady) return;
+            tarjeta.dataset.dragReady = "true";
+
+            tarjeta.addEventListener('dragstart', function(e) {
+                const id = this.getAttribute('data-id') || this.getAttribute('id') || 'item-' + Math.random();
+                const nombre = this.getAttribute('data-nombre') || this.querySelector('h3')?.innerText || 'Librería';
+                
+                e.dataTransfer.setData('text/plain', JSON.stringify({ id: id, nombre: nombre }));
+                e.dataTransfer.effectAllowed = 'copy';
+                this.style.opacity = '0.5';
             });
-        }
-        if ($('#zona-favoritos').length > 0) {
-            if ($('#zona-favoritos').hasClass('ui-droppable')) {
-                $('#zona-favoritos').droppable('destroy');
-            }
 
-            $('#zona-favoritos').droppable({
-                accept: '.tarjeta-libreria',
-                hoverClass: 'favoritos-hover',
-                drop: function(event, ui) {
-                    var $zona = $(this);
-                    var $tarjeta = ui.draggable;
+            tarjeta.addEventListener('dragend', function() {
+                this.style.opacity = '1';
+            });
+        });
+
+        if (!zona.dataset.dropReady) {
+            zona.dataset.dropReady = "true";
+
+            zona.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('favoritos-hover');
+            });
+
+            zona.addEventListener('dragleave', function() {
+                this.classList.remove('favoritos-hover');
+            });
+
+            zona.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('favoritos-hover');
+
+                const dataString = e.dataTransfer.getData('text/plain');
+                if (!dataString) return;
+
+                try {
+                    const data = JSON.parse(dataString);
                     
-                    var id = $tarjeta.data('id') || $tarjeta.attr('id');
-                    var nombre = $tarjeta.data('nombre') || $tarjeta.find('h3').text().trim() || 'Librería';
+        
+                    if (this.querySelector(`[data-id="${data.id}"]`)) return; 
 
-                    if (!id) return;
+             
+                    const nuevoFavorito = document.createElement('div');
+                    nuevoFavorito.className = 'favorito-item';
+                    nuevoFavorito.setAttribute('data-id', data.id);
+                    nuevoFavorito.innerText = data.nombre;
+                    this.appendChild(nuevoFavorito);
 
-                    if ($zona.find('[data-id="' + id + '"]').length > 0) {
-                        return; 
-                    }
+                    const textoVacio = this.querySelector('.texto-vacio');
+                    if (textoVacio) textoVacio.style.display = 'none';
 
-                    var $nuevoFavorito = $('<div class="favorito-item" data-id="' + id + '">' + nombre + '</div>');
-                    $zona.append($nuevoFavorito);
-                    
-               
-                    $zona.find('.texto-vacio').hide(); 
-
-               
-                    bdGuardarFavorito(id, nombre);
+                    guardarFavorito(data.id, data.nombre);
+                } catch (err) {
+                    console.error("Error al soltar:", err);
                 }
             });
         }
 
-        bdCargarFavoritos();
+        cargarFavoritos();
     }
 
-    function bdGuardarFavorito(id, nombre) {
-        var favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
+    function guardarFavorito(id, nombre) {
+        let favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
         if (!favoritos.some(fav => fav.id === id)) {
             favoritos.push({ id: id, nombre: nombre });
             localStorage.setItem('bd_mis_favoritos', JSON.stringify(favoritos));
         }
     }
 
-    function bdCargarFavoritos() {
-        var favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
-        var $zona = $('#zona-favoritos');
+    function cargarFavoritos() {
+        let favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
+        const zona = document.getElementById('zona-favoritos');
         
-        if (favoritos.length > 0 && $zona.length > 0) {
-            $zona.find('.texto-vacio').hide(); 
-            favoritos.forEach(function(fav) {
-                if ($zona.find('[data-id="' + fav.id + '"]').length === 0) {
-                    var $item = $('<div class="favorito-item" data-id="' + fav.id + '">' + fav.nombre + '</div>');
-                    $zona.append($item);
+        if (favoritos.length > 0 && zona) {
+            const textoVacio = zona.querySelector('.texto-vacio');
+            if (textoVacio) textoVacio.style.display = 'none'; 
+            
+            favoritos.forEach(fav => {
+                if (!zona.querySelector(`[data-id="${fav.id}"]`)) {
+                    const item = document.createElement('div');
+                    item.className = 'favorito-item';
+                    item.setAttribute('data-id', fav.id);
+                    item.innerText = fav.nombre;
+                    zona.appendChild(item);
                 }
             });
         }
     }
 
-    $(document).ready(function() {
-        initDragAndDrop();
-    });
+    inicializarDragAndDrop();
 
-    $(document).ajaxComplete(function() {
-        initDragAndDrop();
+    
+    const observer = new MutationObserver(function(mutations) {
+        inicializarDragAndDrop();
     });
+    
 
-})(jQuery);
+    const contenedorPrincipal = document.getElementById('bd-content') || document.body;
+    observer.observe(contenedorPrincipal, { childList: true, subtree: true });
+    
+});
