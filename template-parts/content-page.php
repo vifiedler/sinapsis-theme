@@ -17,9 +17,6 @@
 	<?php sinapsis_theme_post_thumbnail(); ?>
 
 	<div class="entry-content">
-		    <p>ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</p>
-
-
 		<?php
 		the_content();
 
