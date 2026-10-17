@@ -6,7 +6,7 @@ $installation = sinapsis_theme_get_field( 'instalacion' );
 $code         = sinapsis_theme_get_field( 'codigo-ejemplo' );
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'library-entry' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'library-entry container-fluid' ); ?>>
 	<header class="entry-header">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header>
@@ -17,7 +17,7 @@ $code         = sinapsis_theme_get_field( 'codigo-ejemplo' );
 		</div>
 	<?php endif; ?>
 
-	<div class="entry-content">
+	<div class="entry-content py-3">
 		<?php if ( $description ) : ?>
 			<div class="library-entry__description"><?php echo wp_kses_post( wpautop( (string) $description ) ); ?></div>
 		<?php endif; ?>
@@ -42,4 +42,17 @@ $code         = sinapsis_theme_get_field( 'codigo-ejemplo' );
 			<p><a href="<?php echo esc_url( $link ); ?>" rel="external noopener"><?php esc_html_e( 'Visitar recurso', 'sinapsis_theme' ); ?></a></p>
 		<?php endif; ?>
 	</div>
+
+	<?php
+	the_post_navigation(
+		array(
+			'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'sinapsis_theme' ) . '</span> <span class="nav-title">%title</span>',
+			'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'sinapsis_theme' ) . '</span> <span class="nav-title">%title</span>',
+		)
+	);
+	?>
+
+	<?php if ( comments_open() || get_comments_number() ) : ?>
+		<?php comments_template(); ?>
+	<?php endif; ?>
 </article>
