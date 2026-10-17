@@ -6,12 +6,15 @@ function css_functions()
     wp_register_style('fuentes', 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&family=Inter:wght@400;600;700&display=swap', 'all');
     wp_register_style('estilo-sinapsis', get_template_directory_uri() . '/assets/librerias/css/estilo-sinapsis.css', 'all');
     wp_register_style('footer-css', get_template_directory_uri() . '/assets/templates/footers/footer.css', 'all');
+   //el drag and drop
+	wp_register_style('jquery-ui-css', 'https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css', array(), '1.13.2', 'all');
+    wp_enqueue_style('jquery-ui-css');
+    
 
     wp_enqueue_style('footer-css');
     wp_enqueue_style('bootstrap');
     wp_enqueue_style('bootstrap-icon');
     wp_enqueue_style('fuentes');
     wp_enqueue_style('estilo-sinapsis');
-
 }
 add_action('wp_enqueue_scripts', 'css_functions');
