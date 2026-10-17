@@ -176,3 +176,23 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+require get_template_directory() . '/assets/assets.php';
+/**
+ * Reemplazar jQuery por la versión 4
+ */
+function reemplazar_jquery_4()
+{
+	if (is_admin()) {
+		return;
+	}
+	wp_deregister_script('jquery');
+	wp_register_script(
+		'jquery',
+		'https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js',
+		array(),
+		'4.0.0',
+		true
+	);
+	wp_enqueue_script('jquery');
+}
+add_action('wp_enqueue_scripts', 'reemplazar_jquery_4', 999);
