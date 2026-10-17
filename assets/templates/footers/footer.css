@@ -1,0 +1,75 @@
+/* ============================================
+   FOOTER — estilo Prime Video / Breakdown
+   ============================================ */
+
+.fbs__footer {
+    background-color: inherit;
+    color: #aaa;
+    font-family: 'Inter', sans-serif;
+    margin-top: 2rem;
+}
+
+/* footer_1: logo */
+.fbs__footer img {
+    max-height: 90px;
+    width: auto;
+}
+
+/* footer_2: links */
+.fbs__footer-links,
+.fbs__footer .menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.fbs__footer-links a,
+.fbs__footer .menu a {
+    color: #6bb5d6;
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s;
+}
+
+.fbs__footer-links a:hover,
+.fbs__footer .menu a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* footer_3: copyright (Text widget) */
+.fbs__footer-copy,
+.fbs__footer-copy p {
+    font-size: 0.78rem;
+    color: #555;
+}
+
+.fbs__footer-links .menu-contacto-container {
+    display: contents;
+}
+
+.fbs__footer-links ul.menu {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* enlaces */
+.fbs__footer-links ul.menu li {
+    width: auto !important;
+    flex: none !important;
+    padding: 0;
+}
+.font-footer {
+  font-size: 12px;
+}

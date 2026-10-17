@@ -1,0 +1,278 @@
+/* Topbar fija */
+#masthead.fbs__net-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    z-index: 1050;
+    background-color: var(--bd-bg) !important;
+    border-bottom: 1px solid #1a1a1a !important;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.bd-burger-btn {
+    background: none;
+    border: none;
+    color: var(--bd-text);
+    font-size: 1.75rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.bd-burger-btn:hover {
+    color: var(--bd-accent);
+}
+
+.bd-logo-wrap img {
+    max-height: 40px;
+    width: auto;
+}
+
+/* Contenedor sidebar lateral */
+.bd-sidebar-vertical {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: var(--bd-sidebar-w);
+    height: calc(100vh - 64px);
+    background-color: var(--bd-panel);
+    border-right: 1px solid #1a1a1a;
+    /*z-index: 1040;*/
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-bottom: 90px;
+}
+
+/* Enlaces */
+.bd-vertical-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.bd-vertical-nav-list .nav-item {
+    width: 100%;
+    position: relative;
+}
+
+.bd-vertical-nav-list .nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.25rem !important;
+    color: var(--bd-text-muted) !important;
+    font-family: var(--bd-font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    border-bottom: none !important;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Iconos dentro de los enlaces */
+.bd-vertical-nav-list .nav-item .nav-link i,
+.bd-vertical-nav-list .nav-item .nav-link::before {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.bd-vertical-nav-list .nav-item:hover>.nav-link,
+.bd-vertical-nav-list .nav-item.active>.nav-link,
+.bd-vertical-nav-list .nav-item.current-menu-item>.nav-link {
+    color: var(--bd-text) !important;
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.bd-vertical-nav-list .nav-item.active>.nav-link,
+.bd-vertical-nav-list .nav-item.current-menu-item>.nav-link {
+    border-left: 3px solid var(--bd-accent) !important;
+    padding-left: calc(1.25rem - 3px) !important;
+}
+
+/* Dropdowns del nav */
+/* Forzar flecha a la derecha */
+.bd-vertical-nav-list .dropdown-toggle::after {
+    margin-left: auto !important;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+/* Sobreescribir menu de BS */
+.bd-vertical-nav-list .dropdown-menu {
+    position: static !important;
+    float: none !important;
+    transform: none !important;
+    background-color: #0f0f0f !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: 0;
+    overflow: hidden;
+    display: block;
+}
+
+/* Subenlaces del dropdown */
+.bd-vertical-nav-list .dropdown-menu .dropdown-item {
+    padding: 0.65rem 1.25rem 0.65rem 3.25rem !important;
+    color: var(--bd-text-muted) !important;
+    font-size: 0.8rem;
+    background: none !important;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.bd-vertical-nav-list .dropdown-menu .dropdown-item:hover {
+    color: var(--bd-text) !important;
+    padding-left: 3.5rem !important;
+}
+
+/* sim pre JS */
+
+/*.bd-vertical-nav-list .dropdown:hover .dropdown-toggle::after,
+.bd-vertical-nav-list .dropdown.show .dropdown-toggle::after {
+    transform: rotate(180deg);
+}*/
+
+
+/* Push effect (si es que funciona) */
+
+#page.site {
+    padding-top: 64px;
+    min-height: 100vh;
+}
+
+#bd-content,
+.site-main {
+    margin-left: var(--bd-sidebar-w);
+    width: calc(100% - var(--var-sidebar-w));
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#page.site,
+#bd-content,
+.site-main {
+    padding-bottom: 90px;
+}
+
+/* Clases para colapso con JS (Si es que funciona xd) */
+/* Acordeones no se abren si está compacto */
+.bd-sidebar-vertical.collapsed .dropdown-menu {
+    max-height: 0 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bd-sidebar-vertical {
+        transform: translateX(-100%);
+        width: var(--bd-sidebar-w) !important;
+    }
+
+    #bd-content,
+    .site-main {
+        margin-left: 0 !important;
+    }
+
+    /* Clase que activará el JS en móvil */
+    .bd-sidebar-vertical.open {
+        transform: translateX(0);
+        z-index: 1;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Ajustes topbar tipo Spotify/YTMusic*/
+
+/* Caja de la izquierda (botón+logo)*/
+.bd-topbar-left {
+    flex-shrink: 0;
+}
+
+/* logo por defecto*/
+.bd-logo-wrap img {
+    max-height: 38px;
+    width: auto;
+    display: block;
+}
+
+/* control del search*/
+.bd-topbar-search {
+    flex: 1;
+    max-width: 480px;
+    margin-left: 2.5rem;
+    margin-right: auto;
+}
+
+/* ajustes para formulario de buscador*/
+.bd-topbar-search .bd-search-form {
+    display: flex;
+    align-items: center;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 24px;
+    padding: 2px 6px 2px 16px;
+    width: 100%;
+}
+
+.bd-topbar-search .bd-search-input {
+    box-shadow: none !important;
+}
+
+/* para que no lo tape la barra de administrador*/
+
+/* Desk */
+.admin-bar #masthead.fbs__net-navbar {
+    top: 32px !important;
+}
+
+.admin-bar .bd-sidebar-vertical {
+    top: calc(64px + 32px) !important;
+    height: calc(100vh - 64px - 32px) !important;
+}
+
+/* móvil */
+@media screen and (max-width: 782px) {
+    .admin-bar #masthead.fbs__net-navbar {
+        top: 46px !important;
+    }
+
+    .admin-bar .bd-sidebar-vertical {
+        top: calc(64px + 46px) !important;
+        height: calc(100vh - 64px - 46px) !important;
+    }
+}
+
+/* logo no se desalinea */
+.bd-logo-wrap .navbar-brand {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+
+@media (max-width: 768px) {
+    .bd-sidebar-vertical {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .bd-sidebar-vertical.open {
+        transform: translateX(0);
+    }
+}
