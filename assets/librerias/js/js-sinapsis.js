@@ -2,11 +2,21 @@
 // ah, creo que era el de musica
 
 document.addEventListener('dragstart', function(e) {
-    if (e.target.classList.contains('tarjeta-libreria')) {
-        var id = e.target.getAttribute('data-id') || e.target.getAttribute('id');
-        var nombre = e.target.getAttribute('data-nombre') || e.target.querySelector('h3')?.innerText || 'Librería';
-        e.dataTransfer.setData('text/plain', JSON.stringify({ id: id, nombre: nombre }));
+    var caja = e.target.closest('.library-card');
+    if (caja) {
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+            id: caja.getAttribute('data-id'),
+            nombre: caja.getAttribute('data-nombre')
+        }));
         e.dataTransfer.effectAllowed = 'copy';
+        caja.style.opacity = '0.5';
+    }
+});
+
+document.addEventListener('dragend', function(e) {
+    var caja = e.target.closest('.library-card');
+    if (caja) {
+        caja.style.opacity = '1';
     }
 });
 
@@ -14,14 +24,16 @@ document.addEventListener('dragover', function(e) {
     var zona = e.target.closest('#zona-favoritos');
     if (zona) {
         e.preventDefault();
-        zona.classList.add('favoritos-hover');
+        zona.style.borderColor = '#dc3545';
+        zona.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
     }
 });
 
 document.addEventListener('dragleave', function(e) {
     var zona = e.target.closest('#zona-favoritos');
     if (zona) {
-        zona.classList.remove('favoritos-hover');
+        zona.style.borderColor = '';
+        zona.style.backgroundColor = '';
     }
 });
 
@@ -29,7 +41,8 @@ document.addEventListener('drop', function(e) {
     var zona = e.target.closest('#zona-favoritos');
     if (zona) {
         e.preventDefault();
-        zona.classList.remove('favoritos-hover');
+        zona.style.borderColor = '';
+        zona.style.backgroundColor = '';
         
         var dataString = e.dataTransfer.getData('text/plain');
         if (!dataString) return;
@@ -39,36 +52,31 @@ document.addEventListener('drop', function(e) {
             if (!data.id || !data.nombre) return;
             if (zona.querySelector('[data-id="' + data.id + '"]')) return;
 
-            var nuevoFavorito = document.createElement('div');
-            nuevoFavorito.className = 'favorito-item';
-            nuevoFavorito.setAttribute('data-id', data.id);
-            nuevoFavorito.innerText = data.nombre;
-            zona.appendChild(nuevoFavorito);
+            var nuevo = document.createElement('div');
+            nuevo.className = 'favorito-item';
+            nuevo.setAttribute('data-id', data.id);
+            nuevo.innerText = data.nombre;
+            zona.appendChild(nuevo);
 
-            var textoVacio = zona.querySelector('.texto-vacio');
-            if (textoVacio) textoVacio.style.display = 'none';
+            var textosVacios = zona.querySelectorAll('.texto-vacio');
+            textosVacios.forEach(function(t) { t.style.display = 'none'; });
 
-            var favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
+            var favoritos = JSON.parse(localStorage.getItem('bd_favoritos')) || [];
             if (!favoritos.some(function(f) { return f.id === data.id; })) {
                 favoritos.push({ id: data.id, nombre: data.nombre });
-                localStorage.setItem('bd_mis_favoritos', JSON.stringify(favoritos));
+                localStorage.setItem('bd_favoritos', JSON.stringify(favoritos));
             }
         } catch (err) {}
     }
 });
 
-function activarTarjetas() {
-    var tarjetas = document.querySelectorAll('.tarjeta-libreria');
-    tarjetas.forEach(function(t) {
-        t.setAttribute('draggable', 'true');
-    });
-
+document.addEventListener('DOMContentLoaded', function() {
     var zona = document.getElementById('zona-favoritos');
     if (zona) {
-        var favoritos = JSON.parse(localStorage.getItem('bd_mis_favoritos')) || [];
+        var favoritos = JSON.parse(localStorage.getItem('bd_favoritos')) || [];
         if (favoritos.length > 0) {
-            var textoVacio = zona.querySelector('.texto-vacio');
-            if (textoVacio) textoVacio.style.display = 'none';
+            var textosVacios = zona.querySelectorAll('.texto-vacio');
+            textosVacios.forEach(function(t) { t.style.display = 'none'; });
             
             favoritos.forEach(function(f) {
                 if (!zona.querySelector('[data-id="' + f.id + '"]')) {
@@ -81,7 +89,4 @@ function activarTarjetas() {
             });
         }
     }
-}
-
-document.addEventListener('DOMContentLoaded', activarTarjetas);
-new MutationObserver(activarTarjetas).observe(document.body, { childList: true, subtree: true });
+});
