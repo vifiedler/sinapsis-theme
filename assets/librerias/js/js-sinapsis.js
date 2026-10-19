@@ -236,11 +236,13 @@
 
 	function loadCatalog() {
 		var container = document.getElementById('library-catalog');
-		if (!container || !apiUrl) {
+		var endpoint = container && container.dataset.restEndpoint ? container.dataset.restEndpoint : apiUrl;
+		var perPage = container && container.dataset.perPage ? container.dataset.perPage : '100';
+		if (!container || !endpoint) {
 			return;
 		}
 
-		fetch(apiUrl + '?per_page=100&_embed')
+		fetch(endpoint + '?per_page=' + encodeURIComponent(perPage) + '&_embed')
 			.then(function (response) {
 				if (!response.ok) {
 					throw new Error('REST request failed: ' + response.status);

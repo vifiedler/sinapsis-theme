@@ -518,15 +518,28 @@ a {
 	padding: 0.85rem;
 }
 
+.library-detail__code pre,
+.library-detail__code pre code,
+.library-detail__code span {
+	background: #09090b !important;
+}
+
 .library-detail__code span {
 	color: #71717a;
 	display: block;
 	margin-bottom: 0.6rem;
 }
 
+.library-detail__code pre {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
 .library-detail__code code {
-	color: var(--sinapsis-green);
-	font-family: "Courier New", monospace;
+	background: #09090b !important;
+	color: var(--sinapsis-green) !important;
+	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
 	font-size: 0.78rem;
 	line-height: 1.6;
 	white-space: pre;
@@ -646,19 +659,19 @@ a {
 
 .library-entry__content > pre,
 .library-entry__content pre {
-	background: #09090b;
+	background: #09090b !important;
 	border: 1px solid var(--sinapsis-border);
 	border-radius: 0.35rem;
-	color: var(--sinapsis-green);
+	color: var(--sinapsis-green) !important;
 	overflow-x: auto;
 	padding: 1.25rem;
 }
 
 .library-entry__content > pre code,
 .library-entry__content pre code {
-	background: transparent;
-	color: inherit;
-	font-family: "Courier New", monospace;
+	background: #09090b !important;
+	color: var(--sinapsis-green) !important;
+	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
 	font-size: 0.78rem;
 	line-height: 1.65;
 	white-space: pre-wrap;
@@ -687,9 +700,9 @@ a {
 
 .library-entry__code pre,
 .library-entry__code code {
-	background: transparent;
-	color: var(--sinapsis-green);
-	font-family: "Courier New", monospace;
+	background: #09090b !important;
+	color: var(--sinapsis-green) !important;
+	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
 	font-size: 0.78rem;
 	line-height: 1.65;
 	white-space: pre-wrap;
