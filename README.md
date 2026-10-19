@@ -13,7 +13,8 @@ entradas y sus campos se gestionan con Secure Custom Fields (SCF).
 - `inc/rest-fields.php`: representación REST de los campos SCF.
 - `assets/librerias/css/`: estilos propios del proyecto.
 - `assets/librerias/js/sinapsis-site.js`: interacción visual, drag and drop y favoritos.
-- `assets/librerias/js/sinapsis-rest.js`: cliente REST, JSON y renderizado.
+- `assets/librerias/js/sinapsis-rest.js`: cliente REST mediante jQuery
+  `$.ajax()`, respuestas JSON y renderizado.
 
 SCF ya expone los campos en la API REST. El tema no registra endpoints propios:
 las plantillas PHP consumen los mismos campos mediante las funciones de SCF y

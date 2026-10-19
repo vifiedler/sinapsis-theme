@@ -493,17 +493,6 @@ a {
 	white-space: pre-line;
 }
 
-.library-detail__installation-list {
-	color: var(--sinapsis-muted);
-	margin: 0;
-	padding-left: 1.25rem;
-}
-
-.library-detail__installation-list li {
-	margin-bottom: 0.65rem;
-	padding-left: 0.25rem;
-}
-
 .library-detail__image img {
 	display: block;
 	width: 100%;

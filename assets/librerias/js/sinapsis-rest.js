@@ -14,6 +14,14 @@
 		return element;
 	}
 
+	function requestJson( url ) {
+		return window.jQuery.ajax( {
+			url: url,
+			method: 'GET',
+			dataType: 'json',
+		} );
+	}
+
 	function addTextContent( container, value, className ) {
 		if ( ! value ) {
 			return;
@@ -24,24 +32,16 @@
 		} );
 	}
 
-	function addInstallationList( container, value ) {
-		var list;
+	function addInstallationText( container, value ) {
+		var installation;
 
 		if ( ! value ) {
 			return;
 		}
 
-		list = document.createElement( 'ol' );
-		list.className = 'library-detail__installation-list';
-		String( value ).split( /\r?\n/ ).map( function( line ) {
-			return line.trim();
-		} ).filter( Boolean ).forEach( function( line ) {
-			var item = document.createElement( 'li' );
-
-			item.textContent = line.replace( /^\d+[.)]\s*/, '' );
-			list.appendChild( item );
-		} );
-		container.appendChild( list );
+		installation = textNode( 'p', 'library-detail__installation-text', '' );
+		installation.textContent = String( value ).trim();
+		container.appendChild( installation );
 	}
 
 	function resourceData( post ) {
@@ -109,7 +109,7 @@
 
 		if ( data.installation ) {
 			content.appendChild( textNode( 'h3', '', data.installation_title || 'Instalación' ) );
-			addInstallationList( content, data.installation );
+			addInstallationText( content, data.installation );
 		}
 
 		installationRow.appendChild( content );
@@ -206,18 +206,17 @@
 			return;
 		}
 
-		fetch( endpoint + '?per_page=' + encodeURIComponent( perPage ) + '&_embed' )
-			.then( function( response ) {
-				if ( ! response.ok ) {
-					throw new Error( 'REST request failed: ' + response.status );
-				}
-				return response.json();
-			} )
-			.then( function( posts ) {
+		requestJson( endpoint + '?per_page=' + encodeURIComponent( perPage ) + '&_embed' )
+			.done( function( posts ) {
 				var shelves = {};
 
 				container.replaceChildren();
-				document.getElementById( 'catalog-count' ).textContent = String( posts.length ).padStart( 2, '0' );
+				var catalogCount = document.getElementById( 'catalog-count' );
+
+				if ( catalogCount ) {
+					catalogCount.textContent = String( posts.length ).padStart( 2, '0' );
+				}
+
 				document.querySelectorAll( '[data-catalog-count]' ).forEach( function( count ) {
 					count.textContent = String( posts.length ).padStart( 2, '0' );
 				} );
@@ -237,8 +236,8 @@
 					shelves[ name ].querySelector( '.library-catalog__grid' ).appendChild( createCard( post ) );
 				} );
 			} )
-			.catch( function( error ) {
-				console.error( 'Error cargando el catálogo REST:', error );
+			.fail( function( xhr, status, error ) {
+				console.error( 'Error cargando el catálogo REST:', status, error, xhr.status );
 				showCatalogError( container );
 			} );
 	}
@@ -250,14 +249,8 @@
 			return;
 		}
 
-		fetch( config.postsUrl + '/' + encodeURIComponent( article.dataset.restPostId ) + '?_embed' )
-			.then( function( response ) {
-				if ( ! response.ok ) {
-					throw new Error( 'REST request failed: ' + response.status );
-				}
-				return response.json();
-			} )
-			.then( function( post ) {
+		requestJson( config.postsUrl + '/' + encodeURIComponent( article.dataset.restPostId ) + '?_embed' )
+			.done( function( post ) {
 				var data = resourceData( post );
 				var content = article.querySelector( '.library-entry__content' );
 
@@ -272,9 +265,13 @@
 				}
 				addDetailSections( content, post, data );
 			} )
-			.catch( function( error ) {
-				console.error( 'Error cargando el detalle REST:', error );
-				article.querySelector( '.library-entry__content' ).textContent = 'No fue posible cargar el detalle desde la API REST.';
+			.fail( function( xhr, status, error ) {
+				console.error( 'Error cargando el detalle REST:', status, error, xhr.status );
+				var content = article.querySelector( '.library-entry__content' );
+
+				if ( content ) {
+					content.textContent = 'No fue posible cargar el detalle desde la API REST.';
+				}
 			} );
 	}
 
