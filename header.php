@@ -49,8 +49,10 @@
 				<a class="is-active"
 					href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Todos los módulos', 'sinapsis_theme'); ?><b
 						data-catalog-count>--</b></a>
-				<a href="#library-catalog"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?></a>
-				<a href="#library-catalog"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?></a>
+				<a href="#library-catalog"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?><b
+						data-catalog-count>--</b></a>
+				<a href="#library-catalog"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?><b
+						data-catalog-count>--</b></a>
 			</nav>
 
 			<div class="favorite-dropzone mt-auto">
