@@ -35,10 +35,11 @@
 			</div>
 
 			<form class="library-search w-100" role="search" method="get"
+				data-library-search-form
 				action="<?php echo esc_url(home_url('/')); ?>">
 				<label class="screen-reader-text"
 					for="library-search"><?php esc_html_e('Buscar en la biblioteca', 'sinapsis_theme'); ?></label>
-				<input id="library-search" type="search" name="s"
+				<input id="library-search" type="search" name="s" data-library-search-input
 					placeholder="<?php esc_attr_e('Buscar librería o función...', 'sinapsis_theme'); ?>">
 			</form>
 
@@ -46,13 +47,14 @@
 				aria-label="<?php esc_attr_e('Navegación de biblioteca', 'sinapsis_theme'); ?>">
 				<span
 					class="library-sidebar__label"><?php esc_html_e('01. Arquitectura & Stack', 'sinapsis_theme'); ?></span>
-				<a class="is-active"
-					href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Todos los módulos', 'sinapsis_theme'); ?><b
-						data-catalog-count>--</b></a>
-				<a href="#library-catalog"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?><b
-						data-catalog-count>--</b></a>
-				<a href="#library-catalog"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?><b
-						data-catalog-count>--</b></a>
+				<a class="is-active" href="<?php echo esc_url(home_url('/')); ?>"
+					data-library-filter="all"
+					><?php esc_html_e('Todos los módulos', 'sinapsis_theme'); ?><b
+						data-catalog-count="all">--</b></a>
+				<a href="#library-catalog" data-library-filter="plugin"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?><b
+						data-catalog-count="plugin">--</b></a>
+				<a href="#library-catalog" data-library-filter="library"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?><b
+						data-catalog-count="library">--</b></a>
 			</nav>
 
 			<div class="favorite-dropzone mt-auto">

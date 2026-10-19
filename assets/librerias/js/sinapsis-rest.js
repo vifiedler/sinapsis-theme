@@ -2,6 +2,10 @@
 	'use strict';
 
 	var config = window.sinapsisRestConfig || {};
+	var catalogPosts = [];
+	var activeFilter = 'all';
+	var activeSearch = '';
+	var searchRequest = 0;
 
 	function textNode( tag, className, text ) {
 		var element = document.createElement( tag );
@@ -14,10 +18,11 @@
 		return element;
 	}
 
-	function requestJson( url ) {
+	function requestJson( url, data ) {
 		return window.jQuery.ajax( {
 			url: url,
 			method: 'GET',
+			data: data || {},
 			dataType: 'json',
 		} );
 	}
@@ -68,6 +73,44 @@
 		}
 
 		return data;
+	}
+
+	function isPlugin( post ) {
+		var data = resourceData( post );
+		var terms = post._embedded && post._embedded['wp:term'] ? post._embedded['wp:term'].reduce( function( result, group ) {
+			return result.concat( group );
+		}, [] ) : [];
+		var categories = terms.filter( function( term ) {
+			return 'category' === term.taxonomy;
+		} );
+
+		return 'plugin' === String( data.resource_type || '' ).toLowerCase() ||
+			categories.some( function( term ) {
+				return [ 'plugin', 'plugins' ].indexOf( String( term.slug || '' ).toLowerCase() ) !== -1 ||
+					[ 'plugin', 'plugins' ].indexOf( String( term.name || '' ).toLowerCase() ) !== -1;
+			} );
+	}
+
+	function matchesFilter( post ) {
+		return 'all' === activeFilter ||
+			( 'plugin' === activeFilter && isPlugin( post ) ) ||
+			( 'library' === activeFilter && ! isPlugin( post ) );
+	}
+
+	function updateCounts() {
+		var counts = {
+			all: catalogPosts.length,
+			plugin: catalogPosts.filter( isPlugin ).length,
+			library: catalogPosts.filter( function( post ) {
+				return ! isPlugin( post );
+			} ).length,
+		};
+
+		Object.keys( counts ).forEach( function( filter ) {
+			document.querySelectorAll( '[data-catalog-count="' + filter + '"]' ).forEach( function( count ) {
+				count.textContent = String( counts[ filter ] ).padStart( 2, '0' );
+			} );
+		} );
 	}
 
 	function imageUrl( image ) {
@@ -197,6 +240,96 @@
 		container.replaceChildren( textNode( 'p', 'catalog-status', 'No fue posible cargar los módulos desde la API REST.' ) );
 	}
 
+	function renderCatalog( posts ) {
+		var container = document.getElementById( 'library-catalog' );
+		var visiblePosts = posts.filter( matchesFilter );
+		var shelves = {};
+		var catalogCount = document.getElementById( 'catalog-count' );
+
+		if ( ! container ) {
+			return;
+		}
+
+		container.replaceChildren();
+		if ( catalogCount ) {
+			catalogCount.textContent = String( visiblePosts.length ).padStart( 2, '0' );
+		}
+
+		if ( ! visiblePosts.length ) {
+			container.appendChild( textNode( 'p', 'catalog-status', activeSearch ? 'No se encontraron módulos.' : 'No hay módulos en esta categoría.' ) );
+			return;
+		}
+
+		visiblePosts.forEach( function( post ) {
+			var name = shelfName( post );
+
+			if ( ! shelves[ name ] ) {
+				shelves[ name ] = createShelf( name );
+				container.appendChild( shelves[ name ] );
+			}
+			shelves[ name ].querySelector( '.library-catalog__grid' ).appendChild( createCard( post ) );
+		} );
+	}
+
+	function initFilters() {
+		document.querySelectorAll( '[data-library-filter]' ).forEach( function( filter ) {
+			filter.addEventListener( 'click', function( event ) {
+				event.preventDefault();
+				activeFilter = filter.dataset.libraryFilter;
+				document.querySelectorAll( '[data-library-filter]' ).forEach( function( item ) {
+					item.classList.toggle( 'is-active', item === filter );
+				} );
+				renderCatalog( catalogPosts );
+			} );
+		} );
+	}
+
+	function initSearch( endpoint, perPage ) {
+		var form = document.querySelector( '[data-library-search-form]' );
+		var input = document.querySelector( '[data-library-search-input]' );
+		var timer;
+
+		if ( ! form || ! input || form.dataset.ready ) {
+			return;
+		}
+
+		form.dataset.ready = 'true';
+		form.addEventListener( 'submit', function( event ) {
+			event.preventDefault();
+		} );
+		input.addEventListener( 'input', function() {
+			var value = input.value.trim();
+			var requestId = ++searchRequest;
+
+			window.clearTimeout( timer );
+			timer = window.setTimeout( function() {
+				if ( ! value ) {
+					activeSearch = '';
+					renderCatalog( catalogPosts );
+					return;
+				}
+
+				requestJson( endpoint, {
+					search: value,
+					per_page: perPage,
+					_embed: true,
+				} ).done( function( posts ) {
+					if ( requestId !== searchRequest ) {
+						return;
+					}
+					activeSearch = value;
+					renderCatalog( Array.isArray( posts ) ? posts : [] );
+				} ).fail( function( xhr, status, error ) {
+					if ( requestId !== searchRequest ) {
+						return;
+					}
+					console.error( 'Error buscando módulos en REST:', status, error, xhr.status );
+					showCatalogError( document.getElementById( 'library-catalog' ) );
+				} );
+			}, 300 );
+		} );
+	}
+
 	function loadCatalog() {
 		var container = document.getElementById( 'library-catalog' );
 		var endpoint = container && container.dataset.restEndpoint ? container.dataset.restEndpoint : config.postsUrl;
@@ -206,35 +339,15 @@
 			return;
 		}
 
-		requestJson( endpoint + '?per_page=' + encodeURIComponent( perPage ) + '&_embed' )
+		requestJson( endpoint, {
+			per_page: perPage,
+			_embed: true,
+		} )
 			.done( function( posts ) {
-				var shelves = {};
-
-				container.replaceChildren();
-				var catalogCount = document.getElementById( 'catalog-count' );
-
-				if ( catalogCount ) {
-					catalogCount.textContent = String( posts.length ).padStart( 2, '0' );
-				}
-
-				document.querySelectorAll( '[data-catalog-count]' ).forEach( function( count ) {
-					count.textContent = String( posts.length ).padStart( 2, '0' );
-				} );
-
-				if ( ! posts.length ) {
-					container.appendChild( textNode( 'p', 'catalog-status', 'No hay módulos publicados.' ) );
-					return;
-				}
-
-				posts.forEach( function( post ) {
-					var name = shelfName( post );
-
-					if ( ! shelves[ name ] ) {
-						shelves[ name ] = createShelf( name );
-						container.appendChild( shelves[ name ] );
-					}
-					shelves[ name ].querySelector( '.library-catalog__grid' ).appendChild( createCard( post ) );
-				} );
+				catalogPosts = Array.isArray( posts ) ? posts : [];
+				updateCounts();
+				renderCatalog( catalogPosts );
+				initSearch( endpoint, perPage );
 			} )
 			.fail( function( xhr, status, error ) {
 				console.error( 'Error cargando el catálogo REST:', status, error, xhr.status );
@@ -275,6 +388,7 @@
 			} );
 	}
 
+	initFilters();
 	loadCatalog();
 	loadSingleEntry();
 }() );
