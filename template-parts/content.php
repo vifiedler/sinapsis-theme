@@ -16,4 +16,4 @@
 	<span class="toolbar-note">REST API / GRID READY</span>
 </div>
 
-<?php get_template_part( 'assets/modulos/loop-tarjetas' ); ?>
+<?php get_template_part( 'template-parts/content-library-loop' ); ?>

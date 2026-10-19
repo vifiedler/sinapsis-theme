@@ -2,7 +2,7 @@
 /**
  * REST-powered card loop for the home catalog.
  *
- * The cards are populated by js-sinapsis.js from /wp-json/wp/v2/posts.
+ * The cards are populated by sinapsis-rest.js from /wp-json/wp/v2/posts.
  */
 $loop_config = array(
 	'endpoint' => rest_url( 'wp/v2/posts' ),
