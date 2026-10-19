@@ -153,7 +153,7 @@ a {
 	color: var(--sinapsis-text);
 }
 
-.library-sidebar__nav a b {
+.library-sidebar__nav a [data-catalog-count] {
 	color: var(--sinapsis-violet);
 	font-weight: 400;
 }
