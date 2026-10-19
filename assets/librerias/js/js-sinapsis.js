@@ -22,8 +22,86 @@
 		});
 	}
 
+	function addInstallationList(container, value) {
+		if (!value) {
+			return;
+		}
+		var list = document.createElement('ol');
+		list.className = 'library-detail__installation-list';
+		String(value).split(/\r?\n/).map(function (line) {
+			return line.trim();
+		}).filter(Boolean).forEach(function (line) {
+			var item = document.createElement('li');
+			item.textContent = line.replace(/^\d+[.)]\s*/, '');
+			list.appendChild(item);
+		});
+		container.appendChild(list);
+	}
+
 	function resourceData(post) {
-		return post.sinapsis || {};
+		var data = post.sinapsis || post.acf || {};
+		if (!data.image && data.imagen) {
+			data.image = data.imagen;
+		}
+		if (!data.description && data.descripcion) {
+			data.description = data.descripcion;
+		}
+		if (!data.difficulty && data.dificultad) {
+			data.difficulty = data.dificultad;
+		}
+		if (!data.installation && data.instalacion) {
+			data.installation = data.instalacion;
+		}
+		if (!data.installation_title && data['titulo-instalacion']) {
+			data.installation_title = data['titulo-instalacion'];
+		}
+		if (!data.example_code && data['codigo-ejemplo']) {
+			data.example_code = data['codigo-ejemplo'];
+		}
+		if (!data.shelves && post._embedded && post._embedded['wp:term']) {
+			data.shelves = post._embedded['wp:term'].reduce(function (terms, group) {
+				return terms.concat(group.filter(function (term) {
+					return term.taxonomy === 'categoria-libreria';
+				}).map(function (term) {
+					return { name: term.name, slug: term.slug };
+				}));
+			}, []);
+		}
+		if (!data.resource_type && post._embedded && post._embedded['wp:term']) {
+			var categories = post._embedded['wp:term'].reduce(function (terms, group) {
+				return terms.concat(group);
+			}, []);
+			data.resource_type = categories.some(function (term) {
+				return term.taxonomy === 'category' && term.slug === 'plugin';
+			}) ? 'Plugin' : 'Librería';
+		}
+		return data;
+	}
+
+	function imageUrl(image) {
+		if (!image) {
+			return '';
+		}
+		if (typeof image === 'string') {
+			return image;
+		}
+		return image.url || (image.sizes && (image.sizes.large || image.sizes.medium)) || '';
+	}
+
+	function shelfName(post) {
+		var shelves = resourceData(post).shelves || [];
+		return shelves.length && shelves[0].name ? shelves[0].name : 'Sin clasificar';
+	}
+
+	function createShelf(name) {
+		var shelf = document.createElement('section');
+		shelf.className = 'library-shelf';
+		shelf.dataset.shelf = name;
+		shelf.appendChild(textNode('h2', 'library-shelf__title', name));
+		var grid = document.createElement('div');
+		grid.className = 'library-catalog__grid row g-3';
+		shelf.appendChild(grid);
+		return shelf;
 	}
 
 	function createCard(post) {
@@ -59,19 +137,11 @@
 		footer.appendChild(textNode('span', 'show-label', 'Mostrar →'));
 		summary.appendChild(footer);
 
-		detail.className = 'library-detail row g-4';
-		var detailIntro = textNode('div', 'col-12 col-lg', '');
+		detail.className = 'library-detail';
+		var detailIntro = textNode('div', 'library-detail__intro', '');
 		detailIntro.appendChild(textNode('span', 'eyebrow', 'INSPECTOR / ' + id));
 		detailIntro.appendChild(textNode('h2', '', post.title.rendered));
 		addTextContent(detailIntro, data.description);
-		if (data.image) {
-			var image = document.createElement('img');
-			image.className = 'img-fluid rounded border mt-3';
-			image.src = data.image;
-			image.alt = post.title.rendered;
-			image.loading = 'lazy';
-			detailIntro.appendChild(image);
-		}
 		detail.appendChild(detailIntro);
 		addDetailSections(detail, post, data);
 
@@ -81,18 +151,31 @@
 	}
 
 	function addDetailSections(container, post, data) {
+		var installationRow = document.createElement('div');
+		installationRow.className = 'library-detail__installation row g-4';
 		var content = document.createElement('div');
 		content.className = 'library-detail__content col-12 col-lg';
 		addTextContent(content, post.content && post.content.rendered ? post.content.rendered.replace(/<[^>]*>/g, '') : '');
 		if (data.installation) {
 			content.appendChild(textNode('h3', '', data.installation_title || 'Instalación'));
-			addTextContent(content, data.installation, 'library-detail__formatted-content');
+			addInstallationList(content, data.installation);
 		}
-		container.appendChild(content);
+		installationRow.appendChild(content);
+		if (imageUrl(data.image)) {
+			var imageColumn = textNode('div', 'library-detail__image col-12 col-lg-4', '');
+			var image = document.createElement('img');
+			image.className = 'img-fluid rounded border';
+			image.src = imageUrl(data.image);
+			image.alt = post.title.rendered;
+			image.loading = 'lazy';
+			imageColumn.appendChild(image);
+			installationRow.appendChild(imageColumn);
+		}
+		container.appendChild(installationRow);
 
 		if (data.example_code) {
 			var code = textNode('code', '', data.example_code);
-			var codeBox = textNode('div', 'library-detail__code col-12 col-lg', '');
+			var codeBox = textNode('div', 'library-detail__code', '');
 			codeBox.appendChild(textNode('span', '', 'CÓDIGO DE EJEMPLO'));
 			var pre = document.createElement('pre');
 			pre.className = 'mb-0';
@@ -102,7 +185,7 @@
 		}
 
 		if (data.link) {
-			var linkBox = textNode('div', 'library-detail__actions col-12 col-lg-auto', '');
+			var linkBox = textNode('div', 'library-detail__actions', '');
 			var link = document.createElement('a');
 			link.className = 'btn btn-outline-light btn-sm';
 			link.href = data.link;
@@ -116,6 +199,39 @@
 
 	function showCatalogError(container) {
 		container.replaceChildren(textNode('p', 'catalog-status', 'No fue posible cargar los módulos desde la API REST.'));
+	}
+
+	function appendFavorite(zone, data) {
+		var favorite = textNode('div', 'favorito-item', '');
+		favorite.dataset.id = data.id;
+		favorite.appendChild(textNode('span', '', data.nombre));
+		var remove = textNode('button', 'favorito-item__remove', '×');
+		remove.type = 'button';
+		remove.setAttribute('aria-label', 'Eliminar ' + data.nombre + ' de favoritos');
+		favorite.appendChild(remove);
+		zone.appendChild(favorite);
+		zone.querySelectorAll('.texto-vacio').forEach(function (element) {
+			element.style.display = 'none';
+		});
+	}
+
+	function restoreFavorites() {
+		var zone = document.getElementById('zona-favoritos');
+		if (!zone) {
+			return;
+		}
+		var favorites;
+		try {
+			favorites = JSON.parse(localStorage.getItem('bd_favoritos') || '[]');
+		} catch (error) {
+			console.error('No fue posible restaurar los favoritos:', error);
+			favorites = [];
+		}
+		favorites.forEach(function (favorite) {
+			if (favorite.id && favorite.nombre && !zone.querySelector('[data-id="' + favorite.id + '"]')) {
+				appendFavorite(zone, favorite);
+			}
+		});
 	}
 
 	function loadCatalog() {
@@ -141,8 +257,14 @@
 					container.appendChild(textNode('p', 'catalog-status', 'No hay módulos publicados.'));
 					return;
 				}
+				var shelves = {};
 				posts.forEach(function (post) {
-					container.appendChild(createCard(post));
+					var name = shelfName(post);
+					if (!shelves[name]) {
+						shelves[name] = createShelf(name);
+						container.appendChild(shelves[name]);
+					}
+					shelves[name].querySelector('.library-catalog__grid').appendChild(createCard(post));
 				});
 			})
 			.catch(function (error) {
@@ -170,13 +292,6 @@
 				article.querySelector('.entry-title').textContent = post.title.rendered;
 				var content = article.querySelector('.library-entry__content');
 				content.replaceChildren();
-				if (data.image) {
-					var image = document.createElement('img');
-					image.className = 'img-fluid rounded border mb-4';
-					image.src = data.image;
-					image.alt = post.title.rendered;
-					content.appendChild(image);
-				}
 				addTextContent(content, data.description, 'library-entry__description mb-4');
 				if (post.content && post.content.rendered) {
 					var body = document.createElement('div');
@@ -184,9 +299,26 @@
 					body.innerHTML = post.content.rendered;
 					content.appendChild(body);
 				}
+				var installationRow = document.createElement('div');
+				installationRow.className = 'library-detail__installation row g-4';
+				var installationColumn = textNode('div', 'col-12 col-lg', '');
 				if (data.installation) {
-					content.appendChild(textNode('h2', '', data.installation_title || 'Instalación'));
-					addTextContent(content, data.installation);
+					installationColumn.appendChild(textNode('h2', '', data.installation_title || 'Instalación'));
+					addInstallationList(installationColumn, data.installation);
+				}
+				installationRow.appendChild(installationColumn);
+				if (imageUrl(data.image)) {
+					var imageColumn = textNode('div', 'library-detail__image col-12 col-lg-4', '');
+					var image = document.createElement('img');
+					image.className = 'img-fluid rounded border';
+					image.src = imageUrl(data.image);
+					image.alt = post.title.rendered;
+					image.loading = 'lazy';
+					imageColumn.appendChild(image);
+					installationRow.appendChild(imageColumn);
+				}
+				if (data.installation || imageUrl(data.image)) {
+					content.appendChild(installationRow);
 				}
 				if (data.example_code) {
 					var codeSection = textNode('section', 'library-entry__section my-4', '');
@@ -272,12 +404,7 @@
 		if (!data.id || !data.nombre || zone.querySelector('[data-id="' + data.id + '"]')) {
 			return;
 		}
-		var favorite = textNode('div', 'favorito-item', data.nombre);
-		favorite.dataset.id = data.id;
-		zone.appendChild(favorite);
-		zone.querySelectorAll('.texto-vacio').forEach(function (element) {
-			element.style.display = 'none';
-		});
+		appendFavorite(zone, data);
 		var favorites;
 		try {
 			favorites = JSON.parse(localStorage.getItem('bd_favoritos') || '[]');
@@ -291,6 +418,35 @@
 		}
 	});
 
+	document.addEventListener('click', function (event) {
+		var removeButton = event.target.closest('.favorito-item__remove');
+		if (!removeButton) {
+			return;
+		}
+		var favorite = removeButton.closest('.favorito-item');
+		if (!favorite) {
+			return;
+		}
+		var id = favorite.dataset.id;
+		favorite.remove();
+		var favorites;
+		try {
+			favorites = JSON.parse(localStorage.getItem('bd_favoritos') || '[]');
+		} catch (error) {
+			console.error('No fue posible actualizar los favoritos:', error);
+			favorites = [];
+		}
+		localStorage.setItem('bd_favoritos', JSON.stringify(favorites.filter(function (item) {
+			return item.id !== id;
+		})));
+		if (!document.querySelector('#zona-favoritos .favorito-item')) {
+			document.querySelectorAll('#zona-favoritos .texto-vacio').forEach(function (element) {
+				element.style.display = '';
+			});
+		}
+	});
+
 	loadCatalog();
 	loadSingleEntry();
+	restoreFavorites();
 }());

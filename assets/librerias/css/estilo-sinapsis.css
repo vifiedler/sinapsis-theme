@@ -341,6 +341,23 @@ a {
 	--bs-gutter-y: 1rem;
 }
 
+.library-shelf {
+	margin-bottom: 2.5rem;
+}
+
+.library-shelf__title {
+	border-bottom: 1px solid var(--sinapsis-border);
+	color: var(--sinapsis-text);
+	font-size: 1rem;
+	letter-spacing: 0.03em;
+	margin: 0 0 1rem;
+	padding-bottom: 0.7rem;
+}
+
+.library-catalog__grid {
+	--bs-gutter-y: 1rem;
+}
+
 .library-item {
 	background: var(--sinapsis-surface);
 	border: 1px solid var(--sinapsis-border);
@@ -446,19 +463,58 @@ a {
 	padding: 1.5rem;
 }
 
-.library-detail h2 {
+.library-detail__intro {
+	margin-bottom: 1.5rem;
+}
+
+.library-detail__intro h2 {
+	font-size: clamp(1.5rem, 3vw, 2.2rem);
 	margin: 0 0 0.5rem;
 }
 
-.library-detail p {
+.library-detail__intro p {
 	color: var(--sinapsis-muted);
 	margin: 0;
+}
+
+.library-detail__installation {
+	align-items: start;
+	margin-bottom: 1.5rem;
+}
+
+.library-detail__content h3 {
+	font-size: 1rem;
+	margin: 0 0 0.8rem;
+}
+
+.library-detail__content p {
+	color: var(--sinapsis-muted);
+	margin: 0 0 0.75rem;
+	white-space: pre-line;
+}
+
+.library-detail__installation-list {
+	color: var(--sinapsis-muted);
+	margin: 0;
+	padding-left: 1.25rem;
+}
+
+.library-detail__installation-list li {
+	margin-bottom: 0.65rem;
+	padding-left: 0.25rem;
+}
+
+.library-detail__image img {
+	display: block;
+	width: 100%;
 }
 
 .library-detail__code {
 	background: #09090b;
 	border: 1px solid var(--sinapsis-border);
 	border-radius: 0.35rem;
+	margin-bottom: 1.5rem;
+	overflow-x: auto;
 	padding: 0.85rem;
 }
 
@@ -472,7 +528,8 @@ a {
 	color: var(--sinapsis-green);
 	font-family: "Courier New", monospace;
 	font-size: 0.78rem;
-	white-space: pre-wrap;
+	line-height: 1.6;
+	white-space: pre;
 }
 
 .library-detail__actions {
@@ -485,6 +542,29 @@ a {
 .library-detail__actions small {
 	color: #71717a;
 	max-width: 10rem;
+}
+
+.favorito-item {
+	align-items: center;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.favorito-item__remove {
+	background: transparent;
+	border: 0;
+	color: var(--sinapsis-muted);
+	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1;
+	padding: 0.15rem 0.35rem;
+}
+
+.favorito-item__remove:hover,
+.favorito-item__remove:focus-visible {
+	color: #f87171;
 }
 
 .site-footer {

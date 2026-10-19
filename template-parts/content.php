@@ -16,6 +16,4 @@
 	<span class="toolbar-note">REST API / GRID READY</span>
 </div>
 
-<div id="library-catalog" class="library-catalog row g-3" aria-live="polite">
-	<p class="catalog-status"><?php esc_html_e( 'Cargando módulos...', 'sinapsis_theme' ); ?></p>
-</div>
+<?php get_template_part( 'assets/modulos/loop-tarjetas' ); ?>

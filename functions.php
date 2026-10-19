@@ -155,11 +155,22 @@ function sinapsis_theme_register_rest_fields() {
 				$post_id = (int) $post['id'];
 				$categories = get_the_category( $post_id );
 				$type       = 'Librería';
+				$shelves    = array();
 
 				foreach ( $categories as $category ) {
 					if ( 'plugin' === $category->slug ) {
 						$type = 'Plugin';
 						break;
+					}
+				}
+
+				$terms = get_the_terms( $post_id, 'categoria-libreria' );
+				if ( is_array( $terms ) ) {
+					foreach ( $terms as $term ) {
+						$shelves[] = array(
+							'name' => $term->name,
+							'slug' => $term->slug,
+						);
 					}
 				}
 
@@ -172,6 +183,7 @@ function sinapsis_theme_register_rest_fields() {
 					'link'              => esc_url_raw( (string) sinapsis_theme_get_field( 'link', $post_id ) ),
 					'resource_type'     => $type,
 					'image'             => sinapsis_theme_get_image_url( sinapsis_theme_get_field( 'imagen', $post_id ) ),
+					'shelves'           => $shelves,
 				);
 			},
 			'schema'       => array(
