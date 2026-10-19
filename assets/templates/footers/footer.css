@@ -6,6 +6,21 @@
 	padding: 1.5rem 0;
 }
 
+.sinapsis-footer__navigation {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.sinapsis-footer__menu {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+	justify-content: flex-end;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 .sinapsis-footer__widget img {
 	max-height: 5.5rem;
 	width: auto;
@@ -23,7 +38,8 @@
 }
 
 .sinapsis-footer__links a,
-.sinapsis-footer .menu a {
+.sinapsis-footer .menu a,
+.sinapsis-footer__menu a {
 	color: var(--sinapsis-violet);
 	font-family: "Courier New", monospace;
 	font-size: 0.72rem;
@@ -35,9 +51,17 @@
 .sinapsis-footer__links a:hover,
 .sinapsis-footer__links a:focus-visible,
 .sinapsis-footer .menu a:hover,
-.sinapsis-footer .menu a:focus-visible {
+.sinapsis-footer .menu a:focus-visible,
+.sinapsis-footer__menu a:hover,
+.sinapsis-footer__menu a:focus-visible {
 	color: var(--sinapsis-text);
 	text-decoration: underline;
+}
+
+.sinapsis-footer__links a:visited,
+.sinapsis-footer .menu a:visited,
+.sinapsis-footer__menu a:visited {
+	color: var(--sinapsis-green);
 }
 
 .sinapsis-footer__copyright,
@@ -68,4 +92,11 @@
 	flex: none;
 	padding: 0;
 	width: auto;
+}
+
+@media (max-width: 991.98px) {
+	.sinapsis-footer__navigation,
+	.sinapsis-footer__menu {
+		justify-content: center;
+	}
 }
