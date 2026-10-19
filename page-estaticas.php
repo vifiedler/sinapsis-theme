@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Legal
+ * Template Name: Estaticas
  * Template Post Type: page
  *
  * @package sinapsis_theme
@@ -13,7 +13,7 @@ get_header();
 	<?php
 	while ( have_posts() ) :
 		the_post();
-		get_template_part( 'template-parts/content', 'page-legal' );
+		get_template_part( 'template-parts/content', 'page-estaticas' );
 	endwhile;
 	?>
 </main>
