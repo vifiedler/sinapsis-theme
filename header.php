@@ -63,10 +63,6 @@
 
 	<div class="library-shell">
 		<header id="masthead" class="library-topbar d-flex align-items-center justify-content-between">
-			<div>
-				<span class="library-topbar__path">WP // CODEX UI <em>v1.0</em></span>
-				<span class="library-topbar__connection">● REST READY</span>
-			</div>
 			<nav id="site-navigation" class="d-flex align-items-center gap-3" aria-label="<?php esc_attr_e( 'Primary menu', 'sinapsis_theme' ); ?>">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Catálogo', 'sinapsis_theme' ); ?></a>
 				<a href="<?php echo esc_url( home_url( '/usuario/' ) ); ?>"><?php esc_html_e( 'Usuario', 'sinapsis_theme' ); ?></a>
