@@ -1,22 +1,26 @@
-<!-- <?php
+<?php
 /**
- * Plantilla genérica para páginas estáticas
- * Tema: sinapsis_theme
+ * Template part for static pages.
+ *
+ * @package sinapsis_theme
  */
-get_header(); ?>
+?>
 
-<main class="container my-5">
-    <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-            <header class="mb-4 border-bottom pb-3">
-                <h1 class="display-5 fw-bold"><?php the_title(); ?></h1>
-            </header>
-            
-            <div class="entry-content">
-                <?php the_content(); ?>
-            </div>
-        </article>
-    <?php endwhile; endif; ?>
-</main>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'library-entry static-page container-fluid py-4' ); ?>>
+	<header class="entry-header library-entry__header mb-4">
+		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+	</header>
 
-<?php get_footer(); ?> -->
+	<div class="entry-content library-entry__content py-3">
+		<?php the_content(); ?>
+
+		<?php
+		wp_link_pages(
+			array(
+				'before' => '<nav class="page-links" aria-label="' . esc_attr__( 'Paginación de la página', 'sinapsis_theme' ) . '">' . esc_html__( 'Páginas:', 'sinapsis_theme' ),
+				'after'  => '</nav>',
+			)
+		);
+		?>
+	</div>
+</article>
