@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 /**
  * Plantilla genérica para páginas estáticas
  * Tema: sinapsis_theme
@@ -19,4 +19,4 @@ get_header(); ?>
     <?php endwhile; endif; ?>
 </main>
 
-<?php get_footer(); ?>
+<?php get_footer(); ?> -->
