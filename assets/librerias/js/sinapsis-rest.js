@@ -3,7 +3,10 @@
 
 	var config = window.sinapsisRestConfig || {};
 	var catalogPosts = [];
-	var activeFilter = 'all';
+	var activeFilters = {
+		type: 'all',
+		difficulty: 'all',
+	};
 	var activeSearch = '';
 	var searchRequest = 0;
 
@@ -91,18 +94,45 @@
 			} );
 	}
 
+	function filterValue( value ) {
+		return String( value || '' )
+			.toLowerCase()
+			.replace( /[áàäâ]/g, 'a' )
+			.replace( /[éèëê]/g, 'e' )
+			.replace( /[íìïî]/g, 'i' )
+			.replace( /[óòöô]/g, 'o' )
+			.replace( /[úùüû]/g, 'u' )
+			.replace( /ñ/g, 'n' )
+			.trim();
+	}
+
 	function matchesFilter( post ) {
-		return 'all' === activeFilter ||
-			( 'plugin' === activeFilter && isPlugin( post ) ) ||
-			( 'library' === activeFilter && ! isPlugin( post ) );
+		var data = resourceData( post );
+		var typeMatches = 'all' === activeFilters.type ||
+			( 'plugin' === activeFilters.type && isPlugin( post ) ) ||
+			( 'library' === activeFilters.type && ! isPlugin( post ) );
+		var difficultyMatches = 'all' === activeFilters.difficulty ||
+			filterValue( data.difficulty ) === activeFilters.difficulty;
+
+		return typeMatches && difficultyMatches;
 	}
 
 	function updateCounts() {
 		var counts = {
-			all: catalogPosts.length,
-			plugin: catalogPosts.filter( isPlugin ).length,
-			library: catalogPosts.filter( function( post ) {
+			'type-all': catalogPosts.length,
+			'type-plugin': catalogPosts.filter( isPlugin ).length,
+			'type-library': catalogPosts.filter( function( post ) {
 				return ! isPlugin( post );
+			} ).length,
+			'difficulty-all': catalogPosts.length,
+			'difficulty-facil': catalogPosts.filter( function( post ) {
+				return filterValue( resourceData( post ).difficulty ) === 'facil';
+			} ).length,
+			'difficulty-intermedio': catalogPosts.filter( function( post ) {
+				return filterValue( resourceData( post ).difficulty ) === 'intermedio';
+			} ).length,
+			'difficulty-dificil': catalogPosts.filter( function( post ) {
+				return filterValue( resourceData( post ).difficulty ) === 'dificil';
 			} ).length,
 		};
 
@@ -272,11 +302,13 @@
 	}
 
 	function initFilters() {
-		document.querySelectorAll( '[data-library-filter]' ).forEach( function( filter ) {
+		document.querySelectorAll( '[data-library-filter][data-library-filter-group]' ).forEach( function( filter ) {
 			filter.addEventListener( 'click', function( event ) {
+				var group = filter.dataset.libraryFilterGroup;
+
 				event.preventDefault();
-				activeFilter = filter.dataset.libraryFilter;
-				document.querySelectorAll( '[data-library-filter]' ).forEach( function( item ) {
+				activeFilters[ group ] = filter.dataset.libraryFilter;
+				document.querySelectorAll( '[data-library-filter-group="' + group + '"]' ).forEach( function( item ) {
 					item.classList.toggle( 'is-active', item === filter );
 				} );
 				renderCatalog( catalogPosts );

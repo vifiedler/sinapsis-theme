@@ -46,15 +46,32 @@
 			<nav class="library-sidebar__nav d-flex flex-column gap-1"
 				aria-label="<?php esc_attr_e('Navegación de biblioteca', 'sinapsis_theme'); ?>">
 				<span
-					class="library-sidebar__label"><?php esc_html_e('01. Arquitectura & Stack', 'sinapsis_theme'); ?></span>
+					class="library-sidebar__label"><?php esc_html_e('Formato de código', 'sinapsis_theme'); ?></span>
 				<a class="is-active" href="<?php echo esc_url(home_url('/')); ?>"
+					data-library-filter-group="type"
 					data-library-filter="all"
 					><?php esc_html_e('Todos los módulos', 'sinapsis_theme'); ?><b
-						data-catalog-count="all">--</b></a>
-				<a href="#library-catalog" data-library-filter="plugin"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?><b
-						data-catalog-count="plugin">--</b></a>
-				<a href="#library-catalog" data-library-filter="library"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?><b
-						data-catalog-count="library">--</b></a>
+						data-catalog-count="type-all">--</b></a>
+				<a href="#library-catalog" data-library-filter-group="type" data-library-filter="plugin"><?php esc_html_e('Plugins', 'sinapsis_theme'); ?><b
+						data-catalog-count="type-plugin">--</b></a>
+				<a href="#library-catalog" data-library-filter-group="type" data-library-filter="library"><?php esc_html_e('Librerías', 'sinapsis_theme'); ?><b
+						data-catalog-count="type-library">--</b></a>
+			</nav>
+			<nav class="library-sidebar__nav d-flex flex-column gap-1"
+				aria-label="<?php esc_attr_e('Navegación de biblioteca', 'sinapsis_theme'); ?>">
+				<span
+					class="library-sidebar__label"><?php esc_html_e('Niveles de Dificultad', 'sinapsis_theme'); ?></span>
+				<a class="is-active" href="<?php echo esc_url(home_url('/')); ?>"
+					data-library-filter-group="difficulty"
+					data-library-filter="all"
+					><?php esc_html_e('Todas las dificultades', 'sinapsis_theme'); ?><b
+						data-catalog-count="difficulty-all">--</b></a>
+				<a href="#library-catalog" data-library-filter-group="difficulty" data-library-filter="facil"><?php esc_html_e('Fácil', 'sinapsis_theme'); ?><b
+						data-catalog-count="difficulty-facil">--</b></a>
+				<a href="#library-catalog" data-library-filter-group="difficulty" data-library-filter="intermedio"><?php esc_html_e('Intermedio', 'sinapsis_theme'); ?><b
+						data-catalog-count="difficulty-intermedio">--</b></a>
+				<a href="#library-catalog" data-library-filter-group="difficulty" data-library-filter="dificil"><?php esc_html_e('Difícil', 'sinapsis_theme'); ?><b
+						data-catalog-count="difficulty-dificil">--</b></a>
 			</nav>
 
 			<div class="favorite-dropzone mt-auto">
