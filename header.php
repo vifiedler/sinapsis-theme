@@ -93,11 +93,5 @@
 
 		<div class="library-shell">
 			<header id="masthead" class="library-topbar d-flex align-items-center justify-content-between">
-				<nav id="site-navigation" class="d-flex align-items-center gap-3"
-					aria-label="<?php esc_attr_e('Primary menu', 'sinapsis_theme'); ?>">
-					<a
-						href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Catálogo', 'sinapsis_theme'); ?></a>
-					<a
-						href="<?php echo esc_url(home_url('/usuario/')); ?>"><?php esc_html_e('Usuario', 'sinapsis_theme'); ?></a>
-				</nav>
+				<?php include get_template_directory() . '/assets/templates/navs/nav.php'; ?>
 			</header>
