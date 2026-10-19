@@ -144,6 +144,47 @@ function sinapsis_theme_scripts() {
 add_action( 'wp_enqueue_scripts', 'sinapsis_theme_scripts' );
 
 /**
+ * Expose the catalog fields used by the REST-powered front end.
+ */
+function sinapsis_theme_register_rest_fields() {
+	register_rest_field(
+		'post',
+		'sinapsis',
+		array(
+			'get_callback' => function ( $post ) {
+				$post_id = (int) $post['id'];
+				$categories = get_the_category( $post_id );
+				$type       = 'Librería';
+
+				foreach ( $categories as $category ) {
+					if ( 'plugin' === $category->slug ) {
+						$type = 'Plugin';
+						break;
+					}
+				}
+
+				return array(
+					'description'       => (string) sinapsis_theme_get_field( 'descripcion', $post_id ),
+					'difficulty'        => (string) sinapsis_theme_get_field( 'dificultad', $post_id ),
+					'installation_title' => (string) sinapsis_theme_get_field( 'titulo-instalacion', $post_id ),
+					'installation'      => (string) sinapsis_theme_get_field( 'instalacion', $post_id ),
+					'example_code'      => (string) sinapsis_theme_get_field( 'codigo-ejemplo', $post_id ),
+					'link'              => esc_url_raw( (string) sinapsis_theme_get_field( 'link', $post_id ) ),
+					'resource_type'     => $type,
+					'image'             => sinapsis_theme_get_image_url( sinapsis_theme_get_field( 'imagen', $post_id ) ),
+				);
+			},
+			'schema'       => array(
+				'description' => __( 'Campos de catálogo de Sinapsis.', 'sinapsis_theme' ),
+				'type'        => 'object',
+				'context'     => array( 'view' ),
+			),
+		)
+	);
+}
+add_action( 'rest_api_init', 'sinapsis_theme_register_rest_fields' );
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';

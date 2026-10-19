@@ -13,6 +13,7 @@ function js_function()
         wp_localize_script('custom-js', 'bd_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'rest_url' => rest_url('breakdown/v1/'),
+            'posts_url' => rest_url('wp/v2/posts'),
             'nonce' => wp_create_nonce('bd_ajax_nonce'),
             'search_url' => home_url('/'),
         ));

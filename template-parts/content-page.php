@@ -12,23 +12,16 @@
 	</header>
 	<div class="entry-content py-3">
 		<?php the_content(); ?>
-	</div>
-
-<<<<<<< HEAD
-	<?php sinapsis_theme_post_thumbnail(); ?>
-
-	<div class="entry-content">
 		<?php
-		the_content();
-
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sinapsis-theme' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sinapsis_theme' ),
 				'after'  => '</div>',
 			)
 		);
 		?>
-	</div><!-- .entry-content -->
+	</div>
+	<?php sinapsis_theme_post_thumbnail(); ?>
 
 	<?php if ( get_edit_post_link() ) : ?>
 		<footer class="entry-footer">
@@ -51,9 +44,9 @@
 			);
 			?>
 		</footer><!-- .entry-footer -->
-=======
+	<?php endif; ?>
+
 	<?php if ( comments_open() || get_comments_number() ) : ?>
 		<?php comments_template(); ?>
->>>>>>> 4e22ea193498e9fecc1939701d6c5cff643b7658
 	<?php endif; ?>
 </article>

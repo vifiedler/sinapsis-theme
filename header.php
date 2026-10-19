@@ -38,13 +38,13 @@
 
 		<nav class="library-sidebar__nav d-flex flex-column gap-1" aria-label="<?php esc_attr_e( 'Navegación de biblioteca', 'sinapsis_theme' ); ?>">
 			<span class="library-sidebar__label"><?php esc_html_e( '01. Arquitectura & Stack', 'sinapsis_theme' ); ?></span>
-			<a class="is-active" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Todos los módulos', 'sinapsis_theme' ); ?><b>06</b></a>
-			<a href="#masonry"><?php esc_html_e( 'JS nativo moderno', 'sinapsis_theme' ); ?><b>03</b></a>
-			<a href="#datatables"><?php esc_html_e( 'jQuery plugins', 'sinapsis_theme' ); ?><b>03</b></a>
+			<a class="is-active" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Todos los módulos', 'sinapsis_theme' ); ?><b data-catalog-count>--</b></a>
+			<a href="#library-catalog"><?php esc_html_e( 'JS nativo moderno', 'sinapsis_theme' ); ?></a>
+			<a href="#library-catalog"><?php esc_html_e( 'Plugins y librerías', 'sinapsis_theme' ); ?></a>
 
 			<span class="library-sidebar__label"><?php esc_html_e( '02. Clasificación técnica', 'sinapsis_theme' ); ?></span>
-			<a href="#masonry"><span><?php esc_html_e( 'Layout & Estructura', 'sinapsis_theme' ); ?><small>Masonry, Swiper, Slick</small></span></a>
-			<a href="#datatables"><span><?php esc_html_e( 'Display & Efectos', 'sinapsis_theme' ); ?><small>DataTables, Chart.js</small></span></a>
+			<a href="#library-catalog"><span><?php esc_html_e( 'Layout & Estructura', 'sinapsis_theme' ); ?><small><?php esc_html_e( 'Recursos publicados', 'sinapsis_theme' ); ?></small></span></a>
+			<a href="#library-catalog"><span><?php esc_html_e( 'Display & Efectos', 'sinapsis_theme' ); ?><small><?php esc_html_e( 'Consultar catálogo', 'sinapsis_theme' ); ?></small></span></a>
 		</nav>
 
 		<div class="favorite-dropzone mt-auto">
