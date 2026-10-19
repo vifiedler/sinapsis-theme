@@ -1,0 +1,273 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}{\f1 Consolas;}}
+{\colortbl;\red31\green31\blue31;\red91\green63\blue154;\red90\green90\blue90;}
+\paperw11907\paperh16840\margl1440\margr1440\margt1200\margb1200
+\viewkind4\uc1
+\pard\qc\b\f0\fs36 DOCUMENTACI\'d3N DEL SITIO SINAPSIS\par
+\pard\qc\b0\fs22 Biblioteca de plugins jQuery y librer\'edas JavaScript\par
+\pard\qc\cf3\fs20 Gu\'eda de presentaci\'f3n - Desaf\'edo "Armando tu biblioteca"\cf0\par
+\pard\qc\fs18 Tema WordPress: sinapsis_theme\par
+\pard\sa240\par
+
+\pard\b\cf2\fs28 1. Resumen ejecutivo\cf0\b0\fs22\par
+Sinapsis es un tema de WordPress que convierte las entradas del sitio en un cat\'e1logo de plugins de jQuery y librer\'edas JavaScript. Cada entrada representa un recurso t\'e9cnico y contiene su informaci\'f3n descriptiva, dificultad, instalaci\'f3n, c\'f3digo de ejemplo, imagen y enlace externo.\par
+\par
+La p\'e1gina principal funciona como un cat\'e1logo Master/Detail:\par
+\pard\li360\fi-180\sa80 \'b7 Master: listado de tarjetas cargadas mediante la API REST de WordPress.\par
+\pard\li360\fi-180\sa80 \'b7 Detail: informaci\'f3n ampliada que aparece al abrir una tarjeta.\par
+\pard\li360\fi-180\sa80 \'b7 Filtros: tipo de recurso y dificultad.\par
+\pard\li360\fi-180\sa80 \'b7 B\'fasqueda: consulta REST din\'e1mica mientras el usuario escribe.\par
+\pard\li360\fi-180\sa80 \'b7 Favoritos: drag and drop hacia la barra lateral, almacenados localmente.\par
+\pard\li360\fi-180\sa80 \'b7 Usuarios: inicio de sesi\'f3n, registro, perfil y cierre de sesi\'f3n usando WordPress.\par
+\pard\li360\fi-180\sa80 \'b7 Administraci\'f3n: las entradas y sus datos se crean y modifican desde el panel de WordPress.\par
+\pard\li0\sa240
+
+\pard\b\cf2\fs28 2. Relaci\'f3n con el desaf\'edo\cf0\b0\fs22\par
+El desaf\'edo solicita crear un listado de plugins de jQuery y librer\'edas de JS con descripci\'f3n, funcionalidad y uso, usando entradas de WordPress como fuente de contenido. Sinapsis cumple ese objetivo porque:\par
+\pard\li360\fi-180\sa80 \'b7 Las entradas de WordPress son los registros de la biblioteca.\par
+\pard\li360\fi-180\sa80 \'b7 SCF administra campos adicionales sin crear una tabla propia.\par
+\pard\li360\fi-180\sa80 \'b7 La API REST expone los registros al navegador en formato JSON.\par
+\pard\li360\fi-180\sa80 \'b7 AJAX permite buscar y consultar datos sin recargar la p\'e1gina.\par
+\pard\li360\fi-180\sa80 \'b7 El frontend transforma el JSON en tarjetas y detalles.\par
+\pard\li360\fi-180\sa80 \'b7 El sistema usa una estructura Master/Detail.\par
+\pard\li0\sa120
+El CRUD solicitado no se implementa dentro de una pantalla propia porque WordPress ya entrega ese CRUD mediante el panel de administraci\'f3n. Crear, leer, actualizar y eliminar entradas se realiza desde Entradas, Categor\'edas, medios y campos SCF. El sitio p\'fablico se concentra en leer, consultar y filtrar esos datos.\par
+
+\pard\b\cf2\fs28 3. Arquitectura general\cf0\b0\fs22\par
+El flujo completo es el siguiente:\par
+\pard\li360\fi-180\sa80 1. El administrador crea una entrada en WordPress.\par
+\pard\li360\fi-180\sa80 2. SCF guarda los campos adicionales como metadatos de esa entrada.\par
+\pard\li360\fi-180\sa80 3. El tema registra esos campos dentro de la respuesta REST.\par
+\pard\li360\fi-180\sa80 4. El navegador solicita /wp-json/wp/v2/posts.\par
+\pard\li360\fi-180\sa80 5. WordPress responde con JSON.\par
+\pard\li360\fi-180\sa80 6. sinapsis-rest.js interpreta los datos.\par
+\pard\li360\fi-180\sa80 7. JavaScript crea las tarjetas y las inserta en #library-catalog.\par
+\pard\li360\fi-180\sa80 8. El usuario puede filtrar, buscar, abrir detalles o guardar favoritos.\par
+\pard\li0\sa180
+La estructura del tema mantiene separados los wrappers de WordPress y el contenido reutilizable. index.php, page.php, page-home.php, page-usuario.php y single.php organizan la p\'e1gina. Los contenidos se cargan en template-parts.\par
+
+\pard\b\cf2\fs28 4. Archivos principales del tema\cf0\b0\fs22\par
+\pard\tx3000\tx8000\b Archivo\tab Responsabilidad\par
+\pard\b0\tx3000\tx8000 functions.php\tab Configuraci\'f3n del tema, soportes, includes y versi\'f3n.\par
+assets/assets.php\tab Incluye las funciones de CSS, JavaScript, men\'fas y widgets.\par
+assets/includes/css-functions.php\tab Encola Bootstrap, iconos, fuentes y estilos del tema.\par
+assets/includes/js-functions.php\tab Encola jQuery 4, Bootstrap Bundle y los dos scripts propios.\par
+assets/includes/menu-functions.php\tab Registra el men\'fa superior y define el Walker.\par
+assets/templates/navs/nav.php\tab Renderiza el men\'fa y los enlaces de autenticaci\'f3n.\par
+assets/templates/navs/nav.css\tab Estilos exclusivos de la navegaci\'f3n superior.\par
+inc/scf-functions.php\tab Helpers para obtener campos SCF e im\'e1genes.\par
+inc/rest-fields.php\tab Agrega el objeto sinapsis a la respuesta REST.\par
+template-parts/content-library-loop.php\tab Crea el contenedor que recibir\'e1 las tarjetas.\par
+assets/librerias/js/sinapsis-rest.js\tab Consumo REST, b\'fasqueda, filtros, tarjetas y detalle.\par
+assets/librerias/js/sinapsis-site.js\tab Favoritos, drag and drop y localStorage.\par
+header.php\tab Barra lateral, buscador y estructura de la cabecera.\par
+template-parts/content.php\tab Encabezado del cat\'e1logo y loop REST.\par
+template-parts/content-page-usuario.php\tab Maqueta del espacio de usuario.\par
+\pard\sa180
+
+\pard\b\cf2\fs28 5. Carga de estilos y scripts\cf0\b0\fs22\par
+WordPress ejecuta wp_enqueue_scripts. El tema registra y carga Bootstrap 5.3.8 desde jsDelivr, jQuery 4.0.0 desde jsDelivr, el CSS general y los archivos propios.\par
+\par
+assets/includes/js-functions.php hace lo siguiente:\par
+\pard\li360\fi-180\sa80 \'b7 Comprueba que no se est\'e9 en el panel de administraci\'f3n.\par
+\pard\li360\fi-180\sa80 \'b7 Desregistra el jQuery incorporado por WordPress.\par
+\pard\li360\fi-180\sa80 \'b7 Registra jQuery 4.0.0 y lo encola en el footer.\par
+\pard\li360\fi-180\sa80 \'b7 Carga bootstrap.bundle.min.js como dependencia de jQuery.\par
+\pard\li360\fi-180\sa80 \'b7 Carga sinapsis-site.js para la interfaz local.\par
+\pard\li360\fi-180\sa80 \'b7 Carga sinapsis-rest.js para la API y el cat\'e1logo.\par
+\pard\li360\fi-180\sa80 \'b7 Usa wp_localize_script para entregar al navegador la URL postsUrl.\par
+\pard\li0\sa180
+La variable disponible en JavaScript es window.sinapsisRestConfig. Su propiedad postsUrl apunta normalmente a https://sitio/wp-json/wp/v2/posts.\par
+
+\pard\b\cf2\fs28 6. SCF: campos de cada entrada\cf0\b0\fs22\par
+Secure Custom Fields guarda campos personalizados asociados a cada post. El helper sinapsis_theme_get_field() intenta usar get_field() si SCF est\'e1 activo. Si no existe esa funci\'f3n, utiliza get_post_meta() como respaldo local.\par
+\par
+Los campos que el tema expone son:\par
+\pard\li360\fi-180\sa80 \'b7 descripcion: resumen del recurso.\par
+\pard\li360\fi-180\sa80 \'b7 dificultad: Facil, Intermedio o Dificil.\par
+\pard\li360\fi-180\sa80 \'b7 titulo-instalacion: t\'edtulo de la secci\'f3n de instalaci\'f3n.\par
+\pard\li360\fi-180\sa80 \'b7 instalacion: instrucciones de uso.\par
+\pard\li360\fi-180\sa80 \'b7 codigo-ejemplo: c\'f3digo de referencia.\par
+\pard\li360\fi-180\sa80 \'b7 link: sitio oficial o documentaci\'f3n externa.\par
+\pard\li360\fi-180\sa80 \'b7 imagen: imagen de la librer\'eda o plugin.\par
+\pard\li0\sa180
+sinapsis_theme_get_image_url() acepta una imagen como array, ID num\'e9rico de adjunto o URL de texto y la normaliza a una URL utilizable.\par
+
+\pard\b\cf2\fs28 7. API REST de WordPress\cf0\b0\fs22\par
+inc/rest-fields.php usa register_rest_field() para agregar un campo llamado sinapsis a cada post del endpoint est\'e1ndar wp/v2/posts. No se crea un endpoint inventado: se ampl\'eda el endpoint oficial de WordPress.\par
+\par
+La respuesta conceptual de una entrada queda as\'ed:\par
+\pard\li360\sa120\f1\fs18 \{ id, title, content, link, sinapsis: \{ description, difficulty, installation_title, installation, example_code, link, resource_type, image, shelves \} \}\par
+\pard\li0\f0\fs22
+resource_type se calcula mediante la categor\'eda de WordPress. Si la entrada tiene la categor\'eda con slug plugin, el tipo es Plugin; de lo contrario se considera Librer\'eda.\par
+\par
+shelves se construye desde la taxonom\'eda categoria-libreria. Cada estanter\'eda lleva nombre y slug, y permite agrupar las tarjetas visualmente.\par
+\par
+La consulta inicial que realiza el navegador equivale a:\par
+\pard\li360\sa120\f1\fs18 GET /wp-json/wp/v2/posts?per_page=100&_embed=true\par
+\pard\li0\f0\fs22
+El par\'e1metro _embed solicita relaciones embebidas, como t\'e9rminos asociados. per_page=100 pide hasta cien entradas en una sola respuesta para esta maqueta.\par
+
+\pard\b\cf2\fs28 8. Carga y renderizado del cat\'e1logo\cf0\b0\fs22\par
+content-library-loop.php no imprime las tarjetas. Imprime un div con id library-catalog y los atributos data-rest-endpoint y data-per-page. Es una declaraci\'f3n de configuraci\'f3n para JavaScript.\par
+\par
+sinapsis-rest.js ejecuta loadCatalog(). La funci\'f3n:\par
+\pard\li360\fi-180\sa80 1. Busca el contenedor library-catalog.\par
+\pard\li360\fi-180\sa80 2. Lee endpoint y cantidad desde data attributes.\par
+\pard\li360\fi-180\sa80 3. Llama a requestJson(), que usa jQuery.ajax con GET y dataType json.\par
+\pard\li360\fi-180\sa80 4. Guarda el array recibido en catalogPosts.\par
+\pard\li360\fi-180\sa80 5. Actualiza los contadores.\par
+\pard\li360\fi-180\sa80 6. Ejecuta renderCatalog().\par
+\pard\li360\fi-180\sa80 7. Activa el buscador.\par
+\pard\li0\sa180
+Cada tarjeta se genera con document.createElement(). Se utilizan details y summary para abrir el detalle sin un script adicional de apertura. La tarjeta contiene ID, tipo, t\'edtulo, dificultad, descripci\'f3n y la indicaci\'f3n Mostrar.\par
+
+\pard\b\cf2\fs28 9. Master/Detail\cf0\b0\fs22\par
+La parte Master es la grilla de tarjetas agrupada por estanter\'eda. renderCatalog() filtra los posts visibles, crea secciones library-shelf y agrega cada tarjeta a su grilla Bootstrap.\par
+\par
+La parte Detail est\'e1 dentro del mismo details. addDetailSections() agrega:\par
+\pard\li360\fi-180\sa80 \'b7 Descripci\'f3n y contenido de la entrada.\par
+\pard\li360\fi-180\sa80 \'b7 Instalaci\'f3n.\par
+\pard\li360\fi-180\sa80 \'b7 Imagen.\par
+\pard\li360\fi-180\sa80 \'b7 C\'f3digo de ejemplo dentro de pre y code.\par
+\pard\li360\fi-180\sa80 \'b7 Enlace externo con target _blank y rel noopener.\par
+\pard\li0\sa180
+En una entrada individual, content-single.php mantiene el t\'edtulo con la funci\'f3n nativa the_title(). El contenido din\'e1mico restante se consulta por REST usando el ID del post guardado en data-rest-post-id.\par
+
+\pard\b\cf2\fs28 10. B\'fasqueda AJAX/REST\cf0\b0\fs22\par
+El formulario del header tiene los atributos data-library-search-form y data-library-search-input. El formulario no se env\'eda con una recarga tradicional: JavaScript cancela submit con preventDefault().\par
+\par
+Cada vez que el usuario escribe:\par
+\pard\li360\fi-180\sa80 \'b7 Se obtiene el texto y se eliminan espacios externos.\par
+\pard\li360\fi-180\sa80 \'b7 Se espera 300 milisegundos mediante debounce.\par
+\pard\li360\fi-180\sa80 \'b7 Se realiza una nueva consulta con el par\'e1metro search.\par
+\pard\li360\fi-180\sa80 \'b7 Se evita que una respuesta antigua reemplace una b\'fasqueda m\'e1s reciente usando searchRequest.\par
+\pard\li360\fi-180\sa80 \'b7 Los resultados se vuelven a renderizar en el mismo cat\'e1logo.\par
+\pard\li0\sa120
+Ejemplo de consulta:\par
+\pard\li360\sa120\f1\fs18 GET /wp-json/wp/v2/posts?search=swiper&per_page=100&_embed=true\par
+\pard\li0\f0\fs22
+Si la b\'fasqueda se vac\'eda, se restaura catalogPosts, que contiene el cat\'e1logo inicial.\par
+
+\pard\b\cf2\fs28 11. Filtros y contadores\cf0\b0\fs22\par
+Hay dos grupos independientes:\par
+\pard\li360\fi-180\sa80 \'b7 Tipo: Todos, Plugins y Librer\'edas.\par
+\pard\li360\fi-180\sa80 \'b7 Dificultad: Todas, F\'e1cil, Intermedio y Dif\'edcil.\par
+\pard\li0\sa120
+activeFilters mantiene ambos valores. matchesFilter exige que se cumplan simult\'e1neamente. Por eso se pueden combinar, por ejemplo, Plugin + F\'e1cil.\par
+\par
+filterValue() normaliza min\'fasculas y elimina acentos. As\'ed, Facil y F\'e1cil se comparan como el mismo valor. updateCounts() calcula cu\'e1ntos registros corresponden a cada opci\'f3n y actualiza los spans data-catalog-count.\par
+\par
+La clasificaci\'f3n de tipo utiliza resource_type y tambi\'e9n revisa categor\'edas embebidas para mantener compatibilidad con la configuraci\'f3n de WordPress.\par
+
+\pard\b\cf2\fs28 12. Favoritos y drag and drop\cf0\b0\fs22\par
+sinapsis-site.js administra la zona #zona-favoritos. Cuando comienza el arrastre, busca la tarjeta .library-item y guarda en dataTransfer un JSON con id y nombre.\par
+\par
+Cuando el usuario arrastra sobre la zona:\par
+\pard\li360\fi-180\sa80 \'b7 dragover cancela el comportamiento por defecto y agrega una clase visual.\par
+\pard\li360\fi-180\sa80 \'b7 drop lee el texto transferido.\par
+\pard\li360\fi-180\sa80 \'b7 JSON.parse() recupera el recurso.\par
+\pard\li360\fi-180\sa80 \'b7 Se evita duplicar el mismo ID.\par
+\pard\li360\fi-180\sa80 \'b7 Se crea un elemento visual en la zona.\par
+\pard\li360\fi-180\sa80 \'b7 Se guarda el array en localStorage.\par
+\pard\li0\sa120
+La clave utilizada es sinapsis_favoritos. Esto significa que los favoritos pertenecen al navegador y dispositivo actual, no a la cuenta WordPress. No se env\'edan a la base de datos y no se sincronizan entre computadores.\par
+\par
+El bot\'f3n de eliminar quita el elemento del DOM y actualiza el array guardado. Si localStorage no est\'e1 disponible o contiene JSON inv\'e1lido, el sistema informa el error en consola y utiliza una lista vac\'eda.\par
+
+\pard\b\cf2\fs28 13. Login, registro y logout\cf0\b0\fs22\par
+La autenticaci\'f3n no fue programada desde cero. WordPress ya administra usuarios, contrase\'f1as, cookies, sesiones, permisos y las pantallas de login/registro.\par
+\par
+assets/templates/navs/nav.php usa funciones nativas:\par
+\pard\li360\fi-180\sa80 \'b7 is_user_logged_in(): pregunta si existe una sesi\'f3n activa.\par
+\pard\li360\fi-180\sa80 \'b7 wp_login_url(): genera el enlace oficial de inicio de sesi\'f3n y conserva el retorno al sitio.\par
+\pard\li360\fi-180\sa80 \'b7 wp_registration_url(): genera la URL oficial de registro.\par
+\pard\li360\fi-180\sa80 \'b7 wp_logout_url(): genera una URL segura para cerrar sesi\'f3n y volver al inicio.\par
+\pard\li0\sa120
+Visitante no autenticado ve Iniciar sesi\'f3n y Registrarse. Usuario autenticado ve Mi perfil y Cerrar sesi\'f3n. Mi perfil lleva a la p\'e1gina WordPress /usuario/, cuyo template es page-usuario.php.\par
+\par
+Importante: el perfil visual actual es una maqueta y los favoritos de la p\'e1gina de usuario todav\'eda contienen datos de prueba. La autenticaci\'f3n s\'ed la resuelve WordPress, pero la persistencia de favoritos por usuario todav\'eda no est\'e1 conectada a la base de datos.\par
+
+\pard\b\cf2\fs28 14. Walker del men\'fa superior\cf0\b0\fs22\par
+menu-functions.php registra la ubicaci\'f3n menu-superior y define Sinapsis_Theme_Nav_Menu_Walker, que extiende Walker_Nav_Menu.\par
+\par
+El Walker controla el HTML que WordPress genera para cada elemento:\par
+\pard\li360\fi-180\sa80 \'b7 start_lvl() genera ul.dropdown-menu para submen\'fas.\par
+\pard\li360\fi-180\sa80 \'b7 start_el() genera li y a.\par
+\pard\li360\fi-180\sa80 \'b7 Agrega nav-item, dropdown y active.\par
+\pard\li360\fi-180\sa80 \'b7 Agrega data-bs-toggle=dropdown si el elemento tiene hijos.\par
+\pard\li360\fi-180\sa80 \'b7 Escapa atributos con esc_attr() y URLs con esc_url().\par
+\pard\li0\sa120
+nav.php llama wp_nav_menu() con theme_location menu-superior, profundidad 2 y el Walker personalizado. El administrador puede cambiar los enlaces desde Apariencia, Men\'fas sin editar PHP.\par
+
+\pard\b\cf2\fs28 15. Templates y flujo de WordPress\cf0\b0\fs22\par
+\pard\li360\fi-180\sa80 \'b7 header.php abre HTML, wp_head(), sidebar y topbar.\par
+\pard\li360\fi-180\sa80 \'b7 index.php es el wrapper general y llama content.php.\par
+\pard\li360\fi-180\sa80 \'b7 page-home.php permite asignar la plantilla Home a una p\'e1gina.\par
+\pard\li360\fi-180\sa80 \'b7 page-usuario.php abre el layout de usuario y llama content-page-usuario.php.\par
+\pard\li360\fi-180\sa80 \'b7 page.php llama content-page.php para p\'e1ginas normales.\par
+\pard\li360\fi-180\sa80 \'b7 single.php llama content-single.php para entradas individuales.\par
+\pard\li360\fi-180\sa80 \'b7 footer.php cierra wrappers y ejecuta wp_footer().\par
+\pard\li0\sa180
+Esta separaci\'f3n permite que los archivos de jerarqu\'eda se ocupen de la diagramaci\'f3n y que los template-parts contengan el contenido concreto.\par
+
+\pard\b\cf2\fs28 16. Bootstrap y HTML\cf0\b0\fs22\par
+La diagramaci\'f3n usa Bootstrap 5.3 y conserva clases propias del proyecto. Entre las utilidades usadas est\'e1n container-fluid, row, col-12, col-md-6, col-xl-4, d-flex, gap, align-items, justify-content, mb, mt, py e img-fluid.\par
+\par
+Las etiquetas HTML cumplen funciones sem\'e1nticas: header, nav, aside, main, article, section, form, label, details, summary, pre y code. El CSS se ocupa de la apariencia, mientras WordPress y JavaScript se ocupan de los datos y la interacci\'f3n.\par
+
+\pard\b\cf2\fs28 17. Seguridad y buenas pr\'e1cticas\cf0\b0\fs22\par
+\pard\li360\fi-180\sa80 \'b7 PHP escapa textos con esc_html(), atributos con esc_attr() y URLs con esc_url().\par
+\pard\li360\fi-180\sa80 \'b7 Los valores de SCF se normalizan antes de formar la respuesta REST.\par
+\pard\li360\fi-180\sa80 \'b7 El enlace externo usa rel="external noopener".\par
+\pard\li360\fi-180\sa80 \'b7 El Walker escapa URLs y atributos de men\'fa.\par
+\pard\li360\fi-180\sa80 \'b7 JavaScript usa textContent para la mayor parte de los textos, evitando interpretar texto simple como HTML.\par
+\pard\li360\fi-180\sa80 \'b7 post.content.rendered se inserta como HTML porque WordPress lo entrega ya procesado por el editor y sus filtros.\par
+\pard\li360\fi-180\sa80 \'b7 El REST p\'fablico solo expone informaci\'f3n de entradas publicada en el endpoint est\'e1ndar.\par
+\pard\li0\sa180
+
+\pard\b\cf2\fs28 18. Qu\'e9 se puede explicar como CRUD\cf0\b0\fs22\par
+Aunque el frontend no tiene botones propios de alta, edici\'f3n y eliminaci\'f3n, el sistema completo s\'ed tiene administraci\'f3n CRUD mediante WordPress:\par
+\pard\li360\fi-180\sa80 C - Create: crear una entrada desde Entradas > A\'f1adir nueva y completar SCF.\par
+\pard\li360\fi-180\sa80 R - Read: el endpoint REST lee las entradas publicadas y el navegador las muestra.\par
+\pard\li360\fi-180\sa80 U - Update: editar la entrada o campos SCF en el panel y volver a publicar.\par
+\pard\li360\fi-180\sa80 D - Delete: enviar una entrada a la papelera desde el panel.\par
+\pard\li0\sa120
+Esto evita duplicar la administraci\'f3n de usuarios, permisos, validaciones, editor, medios y papelera que WordPress ya resuelve.\par
+
+\pard\b\cf2\fs28 19. Limitaciones actuales y mejoras futuras\cf0\b0\fs22\par
+\pard\li360\fi-180\sa80 \'b7 Los favoritos se guardan en localStorage y no por usuario en WordPress.\par
+\pard\li360\fi-180\sa80 \'b7 La p\'e1gina de usuario conserva tarjetas de demostraci\'f3n.\par
+\pard\li360\fi-180\sa80 \'b7 Las recomendaciones est\'e1n anunciadas visualmente, pero todav\'eda no existe un algoritmo.\par
+\pard\li360\fi-180\sa80 \'b7 La consulta inicial limita el cat\'e1logo a 100 entradas.\par
+\pard\li360\fi-180\sa80 \'b7 La cuenta WordPress est\'e1 conectada al login, pero no a favoritos personalizados.\par
+\pard\li360\fi-180\sa80 \'b7 No se implement\'f3 un CRUD p\'fablico porque el desaf\'edo permite utilizar el panel administrativo.\par
+\pard\li0\sa180
+
+\pard\b\cf2\fs28 20. Guion breve para la presentaci\'f3n\cf0\b0\fs22\par
+1. Presentar el problema: localizar y organizar plugins y librer\'edas.\par
+2. Explicar que cada entrada WordPress representa un recurso.\par
+3. Mostrar los campos SCF y la categor\'eda Plugin/Librer\'eda.\par
+4. Abrir la p\'e1gina principal y explicar que el contenedor inicia vac\'edo.\par
+5. Mostrar en las herramientas del navegador la petici\'f3n /wp-json/wp/v2/posts.\par
+6. Explicar que el JSON se transforma en tarjetas mediante sinapsis-rest.js.\par
+7. Probar Plugins, Librer\'edas y una dificultad.\par
+8. Combinar dos filtros y explicar activeFilters.\par
+9. Escribir en el buscador y explicar AJAX, debounce y el par\'e1metro search.\par
+10. Abrir una tarjeta para mostrar la vista Detail.\par
+11. Arrastrar una tarjeta a Favoritos y explicar localStorage.\par
+12. Mostrar Iniciar sesi\'f3n, Registrarse y luego Mi perfil/Cerrar sesi\'f3n.\par
+13. Aclarar que el CRUD de entradas se administra desde WordPress.\par
+14. Cerrar con las mejoras futuras: favoritos por usuario y recomendaciones.\par
+
+\pard\b\cf2\fs28 21. Respuestas r\'e1pidas para preguntas\cf0\b0\fs22\par
+\pard\b\'bf\i \'bfPor qu\'e9 usar REST?\i0\b0 Porque permite que WordPress entregue los datos como JSON y que JavaScript actualice el cat\'e1logo sin recargar la p\'e1gina.\par
+\pard\b\'bf\i \'bfPor qu\'e9 usar AJAX?\i0\b0 La b\'fasqueda usa jQuery.ajax para enviar consultas GET al endpoint REST y recibir resultados en segundo plano.\par
+\pard\b\'bf\i \'bfD\'f3nde est\'e1n los datos?\i0\b0 En las entradas, categor\'edas, taxonom\'edas, medios y metadatos SCF de la base de datos de WordPress.\par
+\pard\b\'bf\i \'bfPor qu\'e9 no hay un CRUD propio?\i0\b0 El panel de WordPress ya permite crear, leer, modificar y eliminar entradas con permisos y validaciones.\par
+\pard\b\'bf\i \'bfLos favoritos se guardan en la cuenta?\i0\b0 Todav\'eda no. Se guardan en localStorage del navegador; la persistencia por usuario es una mejora futura.\par
+\pard\b\'bf\i \'bfQu\'e9 hace el Walker?\i0\b0 Personaliza el HTML del men\'fa WordPress para aplicar clases Bootstrap y soportar submen\'fas.\par
+\pard\b\'bf\i \'bfQu\'e9 pasa si falla REST?\i0\b0 Se registra el error en consola y se muestra un mensaje de error en el cat\'e1logo o detalle.\par
+\pard\b\i0\sa240
+\pard\qc\cf3\fs18 Documento preparado para la presentaci\'f3n de Sinapsis.\cf0\par
+}
