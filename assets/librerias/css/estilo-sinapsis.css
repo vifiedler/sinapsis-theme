@@ -613,6 +613,61 @@ a {
 	font-size: 0.7rem;
 }
 
+.legal-page {
+	margin: 0 auto;
+	max-width: 88rem;
+}
+
+.legal-page__header .entry-title {
+	color: var(--sinapsis-text);
+	font-size: clamp(2rem, 4vw, 3.5rem);
+	letter-spacing: -0.04em;
+	margin: 0;
+}
+
+.legal-page__updated {
+	color: var(--sinapsis-muted);
+	font-family: "Courier New", monospace;
+	font-size: 0.7rem;
+	margin: 0.75rem 0 0;
+}
+
+.legal-page__content {
+	max-width: 60rem;
+}
+
+.legal-page__section {
+	border-bottom: 1px solid var(--sinapsis-border);
+	padding-bottom: 1.5rem;
+}
+
+.legal-page__section:last-child {
+	border-bottom: 0;
+}
+
+.legal-page__section h2 {
+	color: var(--sinapsis-text);
+	font-size: clamp(1.25rem, 2vw, 1.75rem);
+	letter-spacing: -0.025em;
+	margin-bottom: 0.8rem;
+}
+
+.legal-page__section p {
+	color: var(--sinapsis-muted);
+}
+
+.legal-page__section strong {
+	color: var(--sinapsis-text);
+}
+
+.legal-page__section code {
+	background: var(--sinapsis-surface);
+	border: 1px solid var(--sinapsis-border);
+	border-radius: 0.25rem;
+	color: var(--sinapsis-green);
+	padding: 0.1rem 0.3rem;
+}
+
 .library-entry {
 	margin: 0 auto;
 	max-width: 88rem;
