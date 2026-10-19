@@ -11,17 +11,7 @@
 
 ?>
 
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<?php
-			printf(
-				/* translators: %s: current year. */
-				esc_html__( 'Sinapsis %s', 'sinapsis_theme' ),
-				esc_html( gmdate( 'Y' ) )
-			);
-			?>
-		</div>
-	</footer><!-- #colophon -->
+	<?php include get_template_directory() . '/assets/templates/footers/template-footer.php'; ?>
 </div><!-- .library-shell -->
 </div><!-- #page -->
 
