@@ -108,6 +108,7 @@ a {
 	border: 1px solid var(--sinapsis-border);
 	border-radius: 0.35rem;
 	color: var(--sinapsis-text);
+	caret-color: var(--sinapsis-text);
 	font-family: "Courier New", monospace;
 	font-size: 0.72rem;
 	padding: 0.65rem 0.75rem;
@@ -117,6 +118,7 @@ a {
 .library-search input:focus {
 	border-color: var(--sinapsis-violet);
 	box-shadow: 0 0 0 2px rgb(167 139 250 / 20%);
+	color: var(--sinapsis-text);
 	outline: 0;
 }
 

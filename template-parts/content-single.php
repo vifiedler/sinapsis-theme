@@ -1,6 +1,6 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'library-entry container-fluid py-4' ); ?> data-rest-post-id="<?php echo esc_attr( get_the_ID() ); ?>">
 	<header class="entry-header library-entry__header mb-4">
-		<h1 class="entry-title"><?php esc_html_e( 'Cargando entrada...', 'sinapsis_theme' ); ?></h1>
+		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header>
 
 	<div class="entry-content library-entry__content py-3">

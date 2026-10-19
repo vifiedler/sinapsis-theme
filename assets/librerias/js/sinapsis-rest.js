@@ -367,7 +367,6 @@
 				var data = resourceData( post );
 				var content = article.querySelector( '.library-entry__content' );
 
-				article.querySelector( '.entry-title' ).textContent = post.title.rendered;
 				content.replaceChildren();
 				addTextContent( content, data.description, 'library-entry__description mb-4' );
 				if ( post.content && post.content.rendered ) {
