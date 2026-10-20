@@ -26,15 +26,13 @@
 <section class="user-page__panel mb-4" aria-labelledby="favorites-title">
 	<span class="eyebrow">COLLECTION / SAVED_ITEMS</span>
 	<h2 id="favorites-title"><?php esc_html_e( 'Favoritos guardados', 'sinapsis_theme' ); ?></h2>
-	<div class="user-page__items row g-3">
-		<div class="user-page__item col-12 col-md-6">
-			<strong>DataTables</strong>
-			<span>jQuery Plugin · Display & Efectos · v1.13.8</span>
-		</div>
-		<div class="user-page__item col-12 col-md-6">
-			<strong>Swiper.js</strong>
-			<span>JS Nativo · Layout & Estructura · v11.1.0</span>
-		</div>
+	<div
+		id="favorites-list"
+		class="user-page__items row g-3"
+		data-favorites-endpoint="<?php echo esc_url( rest_url( 'wp/v2/posts' ) ); ?>"
+		aria-live="polite"
+	>
+		<p class="user-page__intro"><?php esc_html_e( 'Cargando favoritos…', 'sinapsis_theme' ); ?></p>
 	</div>
 </section>
 
