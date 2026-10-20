@@ -41,6 +41,14 @@ function sinapsis_theme_enqueue_scripts() {
 		true
 	);
 
+	wp_enqueue_script(
+	'sinapsis-theme-recommendations',
+	get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendations.js',
+	array( 'jquery' ),
+	_S_VERSION,
+	true
+	);
+
 	wp_localize_script(
 		'sinapsis-theme-rest',
 		'sinapsisRestConfig',
