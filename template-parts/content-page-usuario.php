@@ -41,5 +41,15 @@
 <section class="user-page__panel mb-4" aria-labelledby="recommendations-title">
 	<span class="eyebrow">RECOMMENDATIONS / PREVIEW</span>
 	<h2 id="recommendations-title"><?php esc_html_e( 'Recomendaciones', 'sinapsis_theme' ); ?></h2>
-	<p class="user-page__intro"><?php esc_html_e( 'Próximamente se calcularán a partir de las categorías, dependencias y niveles de tus favoritos.', 'sinapsis_theme' ); ?></p>
+	<p class="user-page__intro">
+		<?php esc_html_e( 'Sugerencias calculadas a partir de las categorías y niveles de dificultad de tus favoritos.', 'sinapsis_theme' ); ?>
+	</p>
+	<div
+		id="recommendations-list"
+		class="user-page__items row g-3"
+		data-recommendations-endpoint="<?php echo esc_url( rest_url( 'wp/v2/posts' ) ); ?>"
+		aria-live="polite"
+	>
+		<p class="user-page__intro"><?php esc_html_e( 'Calculando recomendaciones…', 'sinapsis_theme' ); ?></p>
+	</div>
 </section>
