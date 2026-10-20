@@ -98,11 +98,13 @@
 		return score;
 	}
 
-	function renderMessage( container, message ) {
-		if ( ! container ) return;
+		function renderMessage( container, message ) {
+		if ( ! container ) {
+			return;
+		}
 		container.replaceChildren();
 		var p = document.createElement( 'p' );
-		p.className = 'user-page__intro';
+		p.className = 'user-page__intro col-12 mt-2 mb-3'; 
 		p.textContent = message;
 		container.appendChild( p );
 	}
