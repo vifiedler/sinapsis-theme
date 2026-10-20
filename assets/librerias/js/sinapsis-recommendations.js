@@ -40,11 +40,9 @@
 
 	function extractTermIds( post, taxonomy ) {
 		var ids = [];
-
 		if ( ! post._embedded || ! post._embedded[ 'wp:term' ] ) {
 			return ids;
 		}
-
 		post._embedded[ 'wp:term' ].forEach( function( group ) {
 			group.forEach( function( term ) {
 				if ( term.taxonomy === taxonomy ) {
@@ -52,16 +50,11 @@
 				}
 			} );
 		} );
-
 		return ids;
 	}
 
 	function buildProfile( favoritePosts ) {
-		var profile = {
-			categories: {},
-			difficulties: {},
-			types: {},
-		};
+		var profile = { categories: {}, difficulties: {}, types: {} };
 
 		favoritePosts.forEach( function( post ) {
 			var data = resourceData( post );
@@ -83,7 +76,6 @@
 				profile.types[ type ] = ( profile.types[ type ] || 0 ) + 1;
 			}
 		} );
-
 		return profile;
 	}
 
@@ -97,19 +89,17 @@
 		extractTermIds( post, 'category' ).forEach( function( id ) {
 			score += ( profile.categories[ id ] || 0 ) * 2;
 		} );
-
 		if ( data.difficulty ) {
 			score += ( profile.difficulties[ normalize( data.difficulty ) ] || 0 ) * 2;
 		}
-
 		if ( data.resource_type ) {
 			score += ( profile.types[ normalize( data.resource_type ) ] || 0 ) * 1;
 		}
-
 		return score;
 	}
 
 	function renderMessage( container, message ) {
+		if ( ! container ) return;
 		container.replaceChildren();
 		var p = document.createElement( 'p' );
 		p.className = 'user-page__intro';
@@ -117,65 +107,59 @@
 		container.appendChild( p );
 	}
 
-	function renderRecommendations( container, posts ) {
+	function buildPostItem( post ) {
+		var data = resourceData( post );
+		var item = document.createElement( 'div' );
+		var title = document.createElement( 'strong' );
+		var meta = document.createElement( 'span' );
+		var link = document.createElement( 'a' );
+
+		item.className = 'user-page__item col-12 col-md-6';
+		title.textContent = post.title && post.title.rendered ? post.title.rendered : 'Sin título';
+		meta.textContent = ( data.resource_type || 'Librería' ) + ' · ' + ( data.difficulty || 'Nivel no especificado' );
+
+		item.appendChild( title );
+		item.appendChild( meta );
+
+		if ( post.link ) {
+			link.className = 'user-page__item-link';
+			link.href = post.link;
+			link.textContent = 'Ver detalle →';
+			item.appendChild( link );
+		}
+		return item;
+	}
+
+	function renderPosts( container, posts ) {
+		if ( ! container ) return;
 		container.replaceChildren();
-
 		posts.forEach( function( post ) {
-			var data = resourceData( post );
-			var item = document.createElement( 'div' );
-			var title = document.createElement( 'strong' );
-			var meta = document.createElement( 'span' );
-			var link = document.createElement( 'a' );
-
-			item.className = 'user-page__item col-12 col-md-6';
-			title.textContent = post.title && post.title.rendered
-				? post.title.rendered
-				: 'Sin título';
-			meta.textContent = ( data.resource_type || 'Librería' ) +
-				' · ' + ( data.difficulty || 'Nivel no especificado' );
-
-			item.appendChild( title );
-			item.appendChild( meta );
-
-			if ( post.link ) {
-				link.className = 'user-page__item-link';
-				link.href = post.link;
-				link.textContent = 'Ver detalle →';
-				item.appendChild( link );
-			}
-
-			container.appendChild( item );
+			container.appendChild( buildPostItem( post ) );
 		} );
 	}
 
-	function loadRecommendations() {
-		var container = document.getElementById( 'recommendations-list' );
+	function loadAll() {
+		var favoritesContainer = document.getElementById( 'favorites-list' );
+		var recommendationsContainer = document.getElementById( 'recommendations-list' );
 
-		if ( ! container ) {
-			return;
-		}
+		if ( ! favoritesContainer && ! recommendationsContainer ) return;
 
 		var favorites = readFavorites();
-		var endpoint = container.dataset.recommendationsEndpoint || '';
+		var endpoint = ( favoritesContainer && favoritesContainer.dataset.favoritesEndpoint ) ||
+			( recommendationsContainer && recommendationsContainer.dataset.recommendationsEndpoint ) || '';
 
 		if ( ! favorites.length ) {
-			renderMessage(
-				container,
-				'Añade módulos a favoritos arrastrándolos a la zona de favoritos para generar recomendaciones.'
-			);
+			renderMessage( favoritesContainer, 'Aún no tienes favoritos. Arrastra módulos desde el catálogo.' );
+			renderMessage( recommendationsContainer, 'Añade módulos a favoritos arrastrándolos a la zona de favoritos para generar recomendaciones.' );
 			return;
 		}
 
 		var favoriteIds = favorites
-			.map( function( favorite ) {
-				return parseInt( favorite.id, 10 );
-			} )
-			.filter( function( id ) {
-				return ! isNaN( id );
-			} );
+			.map( function( favorite ) { return parseInt( favorite.id, 10 ); } )
+			.filter( function( id ) { return ! isNaN( id ); } );
 
 		if ( ! favoriteIds.length || ! endpoint ) {
-			renderMessage( container, 'No fue posible generar recomendaciones en este momento.' );
+			renderMessage( favoritesContainer, 'No fue posible cargar tus favoritos.' );
 			return;
 		}
 
@@ -186,70 +170,49 @@
 		} )
 			.done( function( favoritePosts ) {
 				if ( ! Array.isArray( favoritePosts ) || ! favoritePosts.length ) {
-					renderMessage( container, 'No se encontraron datos para tus favoritos.' );
+					renderMessage( favoritesContainer, 'Los favoritos guardados ya no existen en el catálogo.' );
+					renderMessage( recommendationsContainer, 'No se encontraron datos para tus favoritos.' );
 					return;
 				}
 
-				requestJson( endpoint, {
-					per_page: 100,
-					_embed: true,
-				} )
+				// favoritos
+				renderPosts( favoritesContainer, favoritePosts );
+
+				if ( ! recommendationsContainer ) return;
+
+				requestJson( endpoint, { per_page: 100, _embed: true } )
 					.done( function( allPosts ) {
 						var profile = buildProfile( favoritePosts );
 						var favoriteSet = {};
-
-						favoritePosts.forEach( function( post ) {
-							favoriteSet[ String( post.id ) ] = true;
-						} );
+						favoritePosts.forEach( function( post ) { favoriteSet[ String( post.id ) ] = true; } );
 
 						var recommendations = ( Array.isArray( allPosts ) ? allPosts : [] )
-							.filter( function( post ) {
-								return ! favoriteSet[ String( post.id ) ];
-							} )
-							.map( function( post ) {
-								return {
-									post: post,
-									score: scorePost( post, profile ),
-								};
-							} )
-							.filter( function( entry ) {
-								return entry.score > 0;
-							} )
-							.sort( function( a, b ) {
-								return b.score - a.score;
-							} )
+							.filter( function( post ) { return ! favoriteSet[ String( post.id ) ]; } )
+							.map( function( post ) { return { post: post, score: scorePost( post, profile ) }; } )
+							.filter( function( entry ) { return entry.score > 0; } )
+							.sort( function( a, b ) { return b.score - a.score; } )
 							.slice( 0, MAX_RECOMMENDATIONS )
-							.map( function( entry ) {
-								return entry.post;
-							} );
+							.map( function( entry ) { return entry.post; } );
 
 						if ( ! recommendations.length ) {
-							renderMessage(
-								container,
-								'Aún no hay módulos relacionados. Prueba guardando más favoritos.'
-							);
+							renderMessage( recommendationsContainer, 'Aún no hay módulos relacionados.' );
 							return;
 						}
-
-						renderRecommendations( container, recommendations );
-					} )
-					.fail( function( xhr, status, error ) {
-						console.error( 'Error cargando recomendaciones:', status, error, xhr.status );
-						renderMessage( container, 'No fue posible cargar las recomendaciones.' );
+						// recomendaciones
+						renderPosts( recommendationsContainer, recommendations );
 					} );
 			} )
-			.fail( function( xhr, status, error ) {
-				console.error( 'Error cargando favoritos:', status, error, xhr.status );
-				renderMessage( container, 'No fue posible cargar tus favoritos.' );
+			.fail( function () {
+				renderMessage( favoritesContainer, 'Error al cargar favoritos.' );
+				renderMessage( recommendationsContainer, 'Error al cargar recomendaciones.' );
 			} );
 	}
 
-	document.addEventListener( 'DOMContentLoaded', loadRecommendations );
-
-	
+	document.addEventListener( 'DOMContentLoaded', loadAll );
 	window.addEventListener( 'storage', function( event ) {
-		if ( event.key === storageKey ) {
-			loadRecommendations();
-		}
+		if ( event.key === storageKey ) loadAll();
+	} );
+	window.addEventListener( 'pageshow', function( event ) {
+		if ( event.persisted ) loadAll();
 	} );
 }() );
