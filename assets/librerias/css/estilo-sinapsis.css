@@ -862,3 +862,18 @@ a:visited {
 		display: none;
 	}
 }
+
+.user-page__item-link {
+	color: var(--sinapsis-violet);
+	display: inline-block;
+	font-family: "Courier New", monospace;
+	font-size: 0.7rem;
+	margin-top: 0.6rem;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.user-page__item-link:hover,
+.user-page__item-link:focus-visible {
+	color: var(--sinapsis-green);
+}
