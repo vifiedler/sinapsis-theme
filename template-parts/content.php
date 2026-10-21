@@ -1,7 +1,7 @@
 <header class="catalog-header row align-items-end g-4">
 	<div class="col-12 col-lg">
-		<h1><?php esc_html_e('Catálogo de librerías JavaScript y plugins jQuery', 'sinapsis_theme'); ?></h1>
-		<p><?php esc_html_e('Explora recursos técnicos, guarda tus favoritos y consulta una ficha sin abandonar esta página.', 'sinapsis_theme'); ?>
+		<h1><?php esc_html_e('Librería Sinapsis', 'sinapsis_theme'); ?></h1>
+		<p><?php esc_html_e('Explora recursos técnicos, guarda tus favoritos arrastrándolos a la casilla y consulta una ficha sin abandonar esta página.', 'sinapsis_theme'); ?>
 		</p>
 	</div>
 	<div class="catalog-header__stats col-12 col-sm-auto">
