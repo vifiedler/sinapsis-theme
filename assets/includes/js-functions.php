@@ -41,7 +41,7 @@ function sinapsis_theme_enqueue_scripts() {
 		true
 	);
 
-	if ( is_front_page() || is_page_template( 'page-home.php' ) || is_page_template( 'page-usuario.php' ) ) {
+	if ( is_front_page() || is_home() || is_page_template( 'page-home.php' ) || is_page_template( 'page-usuario.php' ) ) {
 		wp_enqueue_script(
 			'sinapsis-theme-recommendation-engine',
 			get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendation-engine.js',
@@ -69,7 +69,7 @@ function sinapsis_theme_enqueue_scripts() {
 		);
 	}
 
-	if ( is_front_page() || is_page_template( 'page-home.php' ) ) {
+	if ( is_front_page() || is_home() || is_page_template( 'page-home.php' ) ) {
 		wp_enqueue_script(
 			'sinapsis-theme-slick',
 			'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',

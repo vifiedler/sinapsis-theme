@@ -48,6 +48,7 @@
 	function load() {
 		var section = document.querySelector( '.home-recommendations' );
 		var carousel = $( '.home-recommendations__carousel' );
+		var endpoint;
 
 		if ( ! section || ! carousel.length ) {
 			return;
@@ -79,6 +80,9 @@
 					);
 
 					render( recommendations.length ? recommendations : engine.randomPosts( available, maxRecommendations ), carousel );
+				} )
+				.fail( function() {
+					render( engine.randomPosts( available, maxRecommendations ), carousel );
 				} );
 		} ).fail( function() {
 			carousel.html( '<p class="catalog-status">No fue posible cargar las recomendaciones.</p>' );
