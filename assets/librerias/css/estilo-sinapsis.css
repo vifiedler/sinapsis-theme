@@ -250,15 +250,20 @@ a:visited {
 	margin-top: 0.2rem;
 }
 
-.favorite-dropzone {
-	border-top: 1px solid var(--sinapsis-border);
+.library-sidebar__account-panel {
 	background: #0f0f12;
 	flex-shrink: 0;
-	margin-top: 1rem;
+	margin-top: auto;
 	padding-top: 1rem;
 	position: sticky;
-	bottom: 4.75rem;
+	bottom: 0;
 	z-index: 20;
+}
+
+.favorite-dropzone {
+	border-top: 1px solid var(--sinapsis-border);
+	flex-shrink: 0;
+	padding-top: 1rem;
 }
 
 .favorite-dropzone__box {
@@ -295,17 +300,13 @@ a:visited {
 
 .library-user-link {
 	align-items: center;
-	background: #0f0f12;
 	border-top: 1px solid var(--sinapsis-border);
 	display: flex;
 	gap: 0.65rem;
 	flex-shrink: 0;
 	margin-top: 1rem;
 	padding-top: 1rem;
-	position: sticky;
-	bottom: 1.25rem;
 	text-decoration: none;
-	z-index: 21;
 }
 
 .user-avatar {
@@ -951,8 +952,7 @@ a:visited {
 		width: 100%;
 	}
 
-	.favorite-dropzone,
-	.library-user-link {
+	.library-sidebar__account-panel {
 		position: static;
 	}
 

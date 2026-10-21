@@ -87,19 +87,21 @@
 							data-catalog-count="shelf-all">--</span></a>
 				</nav>
 
-				<div class="favorite-dropzone mt-auto">
-					<span
-						class="library-sidebar__label"><?php esc_html_e('Favoritos del usuario', 'sinapsis_theme'); ?></span>
-					<div id="zona-favoritos" class="favorite-dropzone__box">
-						<strong class="texto-vacio"><?php esc_html_e('Arrastra aquí', 'sinapsis_theme'); ?></strong>
+				<div class="library-sidebar__account-panel">
+					<div class="favorite-dropzone">
 						<span
-							class="texto-vacio"><?php esc_html_e('Tus scripts y librerías favoritas', 'sinapsis_theme'); ?></span>
+							class="library-sidebar__label"><?php esc_html_e('Favoritos del usuario', 'sinapsis_theme'); ?></span>
+						<div id="zona-favoritos" class="favorite-dropzone__box">
+							<strong class="texto-vacio"><?php esc_html_e('Arrastra aquí', 'sinapsis_theme'); ?></strong>
+							<span
+								class="texto-vacio"><?php esc_html_e('Tus scripts y librerías favoritas', 'sinapsis_theme'); ?></span>
+						</div>
 					</div>
-				</div>
 
-				<a class="library-user-link d-flex align-items-center"
-					href="<?php echo esc_url(home_url('/usuario/')); ?>">
-					<span class="user-avatar">VF</span>
-					<span><strong><?php esc_html_e('Mi espacio', 'sinapsis_theme'); ?></strong><small><?php esc_html_e('Ver perfil y guardados', 'sinapsis_theme'); ?></small></span>
-				</a>
+					<a class="library-user-link d-flex align-items-center"
+						href="<?php echo esc_url(home_url('/usuario/')); ?>">
+						<span class="user-avatar">VF</span>
+						<span><strong><?php esc_html_e('Mi espacio', 'sinapsis_theme'); ?></strong><small><?php esc_html_e('Ver perfil y guardados', 'sinapsis_theme'); ?></small></span>
+					</a>
+				</div>
 			</aside>
