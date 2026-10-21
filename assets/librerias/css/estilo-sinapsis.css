@@ -4,6 +4,101 @@
 	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
+.home-recommendations {
+	background: var(--sinapsis-surface);
+	border: 1px solid var(--sinapsis-border);
+	border-radius: 0.45rem;
+	margin: 1.5rem 0 2rem;
+	padding: 1.5rem;
+}
+
+.home-recommendations__header {
+	margin-bottom: 1rem;
+}
+
+.home-recommendations__header h2 {
+	font-size: clamp(1.25rem, 2vw, 1.75rem);
+	margin: 0.35rem 0 0;
+}
+
+.home-recommendations__carousel {
+	margin: 0 -0.5rem;
+}
+
+.home-recommendations__slide {
+	padding: 0 0.5rem;
+}
+
+.home-recommendations__card {
+	background: var(--sinapsis-bg);
+	border: 1px solid var(--sinapsis-border);
+	border-radius: 0.45rem;
+	color: var(--sinapsis-text);
+	display: flex;
+	flex-direction: column;
+	height: 15rem;
+	padding: 1.25rem;
+	text-decoration: none;
+	transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.home-recommendations__card:hover,
+.home-recommendations__card:focus-visible {
+	background: var(--sinapsis-surface-high);
+	border-color: var(--sinapsis-violet);
+	color: var(--sinapsis-text);
+	transform: translateY(-0.2rem);
+}
+
+.home-recommendations__card h3 {
+	font-size: 1.15rem;
+	margin: 1rem 0 0.5rem;
+}
+
+.home-recommendations__card p {
+	color: var(--sinapsis-muted);
+	font-size: 0.85rem;
+	line-height: 1.55;
+	margin: 0;
+	overflow: hidden;
+}
+
+.home-recommendations__meta {
+	border-top: 1px solid var(--sinapsis-border);
+	color: var(--sinapsis-green);
+	font-family: "Courier New", monospace;
+	font-size: 0.65rem;
+	margin-top: auto;
+	padding-top: 0.75rem;
+	text-transform: uppercase;
+}
+
+.home-recommendations .slick-prev,
+.home-recommendations .slick-next {
+	z-index: 1;
+}
+
+.home-recommendations .slick-prev {
+	left: 0.75rem;
+}
+
+.home-recommendations .slick-next {
+	right: 0.75rem;
+}
+
+.home-recommendations .slick-prev:before,
+.home-recommendations .slick-next:before {
+	color: var(--sinapsis-violet);
+}
+
+.home-recommendations .slick-dots {
+	bottom: -2rem;
+}
+
+.home-recommendations .slick-dots li button:before {
+	color: var(--sinapsis-violet);
+}
+
 .library-card {
 	border: 1px solid #ddd;
 	border-radius: 0.5rem;

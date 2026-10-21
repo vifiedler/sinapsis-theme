@@ -57,6 +57,24 @@ function sinapsis_theme_enqueue_scripts() {
 	true
 	);
 
+	if ( is_page_template( 'page-home.php' ) ) {
+	wp_enqueue_script(
+		'sinapsis-theme-slick',
+		'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
+		array( 'jquery' ),
+		'1.8.1',
+		true
+	);
+
+	wp_enqueue_script(
+		'sinapsis-theme-home-recommendations',
+		get_template_directory_uri() . '/assets/librerias/js/sinapsis-home-recommendations.js',
+		array( 'jquery', 'sinapsis-theme-slick' ),
+		_S_VERSION,
+		true
+	);
+	}
+
 	wp_enqueue_script(
 		'sinapsis-theme-animations',
 		get_template_directory_uri() . '/assets/librerias/js/sinapsis-animations.js',
