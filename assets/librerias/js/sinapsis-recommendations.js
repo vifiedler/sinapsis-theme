@@ -72,6 +72,12 @@
 			return;
 		}
 
+		if ( ! document.body.classList.contains( 'logged-in' ) ) {
+			renderMessage( favoritesContainer, 'Inicia sesión para consultar tus favoritos.' );
+			renderMessage( recommendationsContainer, 'Inicia sesión para recibir recomendaciones personalizadas.' );
+			return;
+		}
+
 		favorites = engine.readFavorites( storageKey );
 		endpoint = ( favoritesContainer && favoritesContainer.dataset.favoritesEndpoint ) ||
 			( recommendationsContainer && recommendationsContainer.dataset.recommendationsEndpoint ) || '';

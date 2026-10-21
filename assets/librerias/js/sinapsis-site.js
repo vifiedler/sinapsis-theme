@@ -31,6 +31,18 @@
 		}
 	}
 
+	function clearFavoritesForGuests() {
+		var sidebar = document.querySelector( '[data-user-logged-in]' );
+
+		if ( sidebar && sidebar.dataset.userLoggedIn !== 'true' ) {
+			try {
+				localStorage.removeItem( storageKey );
+			} catch ( error ) {
+				console.error( 'No fue posible limpiar los favoritos:', error );
+			}
+		}
+	}
+
 	function saveFavorites( favorites ) {
 		try {
 			localStorage.setItem( storageKey, JSON.stringify( favorites ) );
@@ -157,6 +169,7 @@
 		} );
 	}
 
+	clearFavoritesForGuests();
 	restoreFavorites();
 	initFavorites();
 }() );

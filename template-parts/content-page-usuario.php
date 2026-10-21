@@ -12,16 +12,27 @@
 	<p class="user-page__intro"><?php esc_html_e( 'Aquí podrás consultar tus scripts favoritos y las recomendaciones generadas a partir de tu colección.', 'sinapsis_theme' ); ?></p>
 </header>
 
-<section class="user-page__panel mb-4" aria-labelledby="user-summary-title">
-	<div class="row align-items-start justify-content-between g-3">
-		<div class="col-12 col-lg">
-			<span class="eyebrow">ACCOUNT / DEMO_USER</span>
-			<h2 id="user-summary-title">Vicente Fiedler</h2>
-			<p class="user-page__intro"><?php esc_html_e( 'Perfil de prueba para validar la estructura visual antes de conectar autenticación y persistencia.', 'sinapsis_theme' ); ?></p>
+<?php if ( is_user_logged_in() ) : ?>
+	<section class="user-page__panel mb-4" aria-labelledby="user-summary-title">
+		<div class="row align-items-start justify-content-between g-3">
+			<div class="col-12 col-lg">
+				<span class="eyebrow">ACCOUNT / DEMO_USER</span>
+				<h2 id="user-summary-title">Vicente Fiedler</h2>
+				<p class="user-page__intro"><?php esc_html_e( 'Perfil de prueba para validar la estructura visual antes de conectar autenticación y persistencia.', 'sinapsis_theme' ); ?></p>
+			</div>
+			<span class="library-type col-auto align-self-start">REST READY</span>
 		</div>
-		<span class="library-type col-auto align-self-start">REST READY</span>
-	</div>
-</section>
+	</section>
+<?php else : ?>
+	<section class="user-page__panel mb-4" aria-labelledby="user-login-title">
+		<h2 id="user-login-title"><?php esc_html_e( 'Inicia sesión para ver tu espacio', 'sinapsis_theme' ); ?></h2>
+		<p class="user-page__intro">
+			<a href="<?php echo esc_url( wp_login_url( get_permalink() ) ); ?>">
+				<?php esc_html_e( 'Iniciar sesión', 'sinapsis_theme' ); ?>
+			</a>
+		</p>
+	</section>
+<?php endif; ?>
 
 <section class="user-page__panel mb-4" aria-labelledby="favorites-title">
 	<span class="eyebrow">COLLECTION / SAVED_ITEMS</span>

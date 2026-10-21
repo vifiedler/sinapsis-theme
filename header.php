@@ -32,7 +32,8 @@
 				href="#primary"><?php esc_html_e('Skip to content', 'sinapsis_theme'); ?></a>
 
 			<aside class="library-sidebar d-flex flex-column"
-				aria-label="<?php esc_attr_e('Filtros y favoritos', 'sinapsis_theme'); ?>">
+				aria-label="<?php esc_attr_e('Filtros y favoritos', 'sinapsis_theme'); ?>"
+				data-user-logged-in="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>">
 				<div class="library-sidebar__brand d-flex align-items-center">
 					<span class="library-sidebar__mark d-none">∎</span>
 					<span class="d-none"><?php esc_html_e('REGISTRY // FILTERS', 'sinapsis_theme'); ?></span>
