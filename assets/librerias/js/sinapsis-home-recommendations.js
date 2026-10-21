@@ -4,6 +4,7 @@
 	var storageKey = 'sinapsis_favoritos';
 	var engine = window.SinapsisRecommendationEngine;
 	var maxRecommendations = 6;
+	var loadSequence = 0;
 
 	function card( post ) {
 		var data = engine.resourceData( post );
@@ -40,6 +41,9 @@
 	}
 
 	function render( posts, carousel ) {
+		if ( carousel.hasClass( 'slick-initialized' ) ) {
+			carousel.slick( 'unslick' );
+		}
 		carousel.empty();
 		posts.forEach( function( post ) {
 			carousel.append( card( post ) );
@@ -70,6 +74,7 @@
 		var section = document.querySelector( '.home-recommendations' );
 		var carousel = $( '.home-recommendations__carousel' );
 		var endpoint;
+		var currentSequence = ++loadSequence;
 
 		if ( ! section || ! carousel.length ) {
 			return;
@@ -87,6 +92,10 @@
 				return ! favoriteIds[ String( post.id ) ];
 			} );
 
+			if ( currentSequence !== loadSequence ) {
+				return;
+			}
+
 			if ( section.dataset.userLoggedIn !== 'true' || ! favorites.length ) {
 				render( engine.randomPosts( available, maxRecommendations ), carousel );
 				return;
@@ -100,15 +109,30 @@
 						maxRecommendations
 					);
 
+					if ( currentSequence !== loadSequence ) {
+						return;
+					}
+
 					render( recommendations.length ? recommendations : engine.randomPosts( available, maxRecommendations ), carousel );
 				} )
 				.fail( function() {
+					if ( currentSequence !== loadSequence ) {
+						return;
+					}
+
 					render( engine.randomPosts( available, maxRecommendations ), carousel );
 				} );
 		} ).fail( function() {
+			if ( currentSequence !== loadSequence ) {
+				return;
+			}
+
 			carousel.html( '<p class="catalog-status">No fue posible cargar las recomendaciones.</p>' );
 		} );
 	}
 
-	$( load );
+	$( function() {
+		load();
+		window.addEventListener( 'sinapsis:favorites-changed', load );
+	} );
 }( window.jQuery ) );

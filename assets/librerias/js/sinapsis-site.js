@@ -34,6 +34,7 @@
 	function saveFavorites( favorites ) {
 		try {
 			localStorage.setItem( storageKey, JSON.stringify( favorites ) );
+			window.dispatchEvent( new CustomEvent( 'sinapsis:favorites-changed' ) );
 		} catch ( error ) {
 			console.error( 'No fue posible guardar los favoritos:', error );
 		}
