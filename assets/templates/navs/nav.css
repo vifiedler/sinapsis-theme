@@ -22,7 +22,7 @@
 
 .library-topbar__navigation .nav-link {
 	color: var(--sinapsis-muted);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.68rem;
 	text-decoration: none;
 	text-transform: uppercase;

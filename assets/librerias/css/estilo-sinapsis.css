@@ -60,7 +60,7 @@
 .home-recommendations__meta {
 	border-top: 1px solid var(--sinapsis-border);
 	color: var(--sinapsis-green);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.65rem;
 	margin-top: auto;
 	padding-top: 0.75rem;
@@ -109,7 +109,22 @@ html,
 body {
 	background: var(--sinapsis-bg);
 	color: var(--sinapsis-text);
-	font-family: Inter, system-ui, sans-serif;
+	font-family: "Open Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+button,
+label,
+input,
+select,
+textarea {
+	font-family: "Roboto Mono", monospace;
 }
 
 body {
@@ -152,7 +167,7 @@ a:visited {
 .library-card__level,
 .library-card__footer,
 .library-detail__code span {
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -175,7 +190,7 @@ a:visited {
 	border-radius: 0.35rem;
 	color: var(--sinapsis-text);
 	caret-color: var(--sinapsis-text);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.72rem;
 	padding: 0.65rem 0.75rem;
 	width: 100%;
@@ -205,7 +220,7 @@ a:visited {
 	border-radius: 0.35rem;
 	color: var(--sinapsis-muted);
 	display: flex;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.72rem;
 	justify-content: space-between;
 	padding: 0.5rem 0.6rem;
@@ -228,7 +243,7 @@ a:visited {
 .library-user-link small {
 	color: #71717a;
 	display: block;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.62rem;
 	margin-top: 0.2rem;
 }
@@ -259,7 +274,7 @@ a:visited {
 
 .favorite-dropzone__box strong {
 	color: var(--sinapsis-violet);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.75rem;
 	text-transform: uppercase;
 }
@@ -285,7 +300,7 @@ a:visited {
 	border-radius: 50%;
 	color: #18111f;
 	display: flex;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 	font-weight: 700;
 	height: 2rem;
@@ -318,7 +333,7 @@ a:visited {
 
 .library-topbar__connection {
 	color: var(--sinapsis-green);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.68rem;
 	margin-left: 1rem;
 }
@@ -330,7 +345,7 @@ a:visited {
 
 .library-topbar nav a {
 	color: var(--sinapsis-muted);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.68rem;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -386,7 +401,7 @@ a:visited {
 
 .catalog-header__stats strong {
 	color: var(--sinapsis-violet);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 1.6rem;
 }
 
@@ -631,7 +646,7 @@ a:visited {
 .library-detail__code code {
 	background: #09090b !important;
 	color: var(--sinapsis-green) !important;
-	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
+	font-family: "Roboto Mono", Consolas, "Cascadia Code", monospace;
 	font-size: 0.78rem;
 	line-height: 1.6;
 	white-space: pre;
@@ -675,7 +690,7 @@ a:visited {
 .site-footer {
 	border-top: 1px solid var(--sinapsis-border);
 	color: #71717a;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 	padding: 1rem 2rem;
 }
@@ -710,7 +725,7 @@ a:visited {
 
 .user-page__item span {
 	color: var(--sinapsis-muted);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 }
 
@@ -728,7 +743,7 @@ a:visited {
 
 .legal-page__updated {
 	color: var(--sinapsis-muted);
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 	margin: 0.75rem 0 0;
 }
@@ -788,6 +803,7 @@ a:visited {
 
 .library-entry__content {
 	color: var(--sinapsis-text);
+	font-family: "Open Sans", sans-serif;
 	font-size: 1rem;
 	line-height: 1.7;
 }
@@ -822,7 +838,7 @@ a:visited {
 .library-entry__content pre code {
 	background: #09090b !important;
 	color: var(--sinapsis-green) !important;
-	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
+	font-family: "Roboto Mono", Consolas, "Cascadia Code", monospace;
 	font-size: 0.78rem;
 	line-height: 1.65;
 	white-space: pre-wrap;
@@ -867,7 +883,7 @@ a:visited {
 
 .library-entry__navigation .nav-subtitle {
 	color: #71717a;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.65rem;
 	text-transform: uppercase;
 }
@@ -947,7 +963,7 @@ a:visited {
 .user-page__item-link {
 	color: var(--sinapsis-violet);
 	display: inline-block;
-	font-family: "Courier New", monospace;
+	font-family: "Roboto Mono", monospace;
 	font-size: 0.7rem;
 	margin-top: 0.6rem;
 	text-decoration: none;
