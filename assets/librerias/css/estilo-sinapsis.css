@@ -371,7 +371,7 @@ a:visited {
 	--bs-gutter-y: 1rem;
 }
 
-.library-item {
+/* .library-item {
 	background: var(--sinapsis-surface);
 	border: 1px solid var(--sinapsis-border);
 	border-radius: 0.45rem;
@@ -380,7 +380,7 @@ a:visited {
 	scroll-margin-top: 1rem;
 	transition: box-shadow 0.35s ease, transform 0.35s ease, flex-basis 0.45s ease;
 	will-change: opacity, transform;
-}
+} */
 
 .library-item[open] {
 	box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
