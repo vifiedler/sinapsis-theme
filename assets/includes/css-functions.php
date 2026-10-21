@@ -15,7 +15,7 @@ function css_functions()
     wp_enqueue_style('fuentes');
     wp_enqueue_style('estilo-sinapsis');
 
-    if ( is_page_template( 'page-home.php' ) ) {
+    if ( is_front_page() || is_page_template( 'page-home.php' ) ) {
         wp_enqueue_style('slick');
         wp_enqueue_style('slick-theme');
     }

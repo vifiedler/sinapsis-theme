@@ -57,7 +57,7 @@ function sinapsis_theme_enqueue_scripts() {
 	true
 	);
 
-	if ( is_page_template( 'page-home.php' ) ) {
+	if ( is_front_page() || is_page_template( 'page-home.php' ) ) {
 	wp_enqueue_script(
 		'sinapsis-theme-slick',
 		'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',

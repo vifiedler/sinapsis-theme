@@ -1,3 +1,7 @@
+<?php if ( is_front_page() ) : ?>
+	<?php get_template_part( 'modulos/loop-recomendaciones' ); ?>
+<?php endif; ?>
+
 <header class="catalog-header row align-items-end g-4">
 	<div class="col-12 col-lg">
 		<h1><?php esc_html_e( 'Catálogo de librerías JavaScript y plugins jQuery', 'sinapsis_theme' ); ?></h1>
