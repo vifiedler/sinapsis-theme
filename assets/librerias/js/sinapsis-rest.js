@@ -6,6 +6,7 @@
 	var activeFilters = {
 		type: 'all',
 		difficulty: 'all',
+		shelf: 'all',
 	};
 	var activeSearch = '';
 	var searchRequest = 0;
@@ -105,6 +106,14 @@
 			} );
 	}
 
+	function libraryTerms( post ) {
+		var data = resourceData( post );
+
+		return ( data.shelves || [] ).filter( function( term ) {
+			return term && term.slug;
+		} );
+	}
+
 	function filterValue( value ) {
 		return String( value || '' )
 			.toLowerCase()
@@ -124,8 +133,12 @@
 			( 'library' === activeFilters.type && ! isPlugin( post ) );
 		var difficultyMatches = 'all' === activeFilters.difficulty ||
 			filterValue( data.difficulty ) === activeFilters.difficulty;
+		var shelfMatches = 'all' === activeFilters.shelf ||
+			libraryTerms( post ).some( function( term ) {
+				return term.slug === activeFilters.shelf;
+			} );
 
-		return typeMatches && difficultyMatches;
+		return typeMatches && difficultyMatches && shelfMatches;
 	}
 
 	function updateCounts() {
@@ -146,11 +159,52 @@
 				return filterValue( resourceData( post ).difficulty ) === 'dificil';
 			} ).length,
 		};
+		catalogPosts.forEach( function( post ) {
+			libraryTerms( post ).forEach( function( term ) {
+				var key = 'shelf-' + term.slug;
+
+				counts[ key ] = ( counts[ key ] || 0 ) + 1;
+			} );
+		} );
+		counts['shelf-all'] = catalogPosts.length;
 
 		Object.keys( counts ).forEach( function( filter ) {
 			document.querySelectorAll( '[data-catalog-count="' + filter + '"]' ).forEach( function( count ) {
 				count.textContent = String( counts[ filter ] ).padStart( 2, '0' );
 			} );
+		} );
+	}
+
+	function renderTaxonomyFilters() {
+		var container = document.querySelector( '[data-library-taxonomy-filters]' );
+		var terms = {};
+
+		if ( ! container ) {
+			return;
+		}
+
+		catalogPosts.forEach( function( post ) {
+			libraryTerms( post ).forEach( function( term ) {
+				terms[ term.slug ] = term;
+			} );
+		} );
+
+		Object.keys( terms ).sort( function( first, second ) {
+			return terms[ first ].name.localeCompare( terms[ second ].name, 'es', {
+				sensitivity: 'base',
+			} );
+		} ).forEach( function( slug ) {
+			var link = document.createElement( 'a' );
+			var count = document.createElement( 'span' );
+
+			link.href = '#library-catalog';
+			link.dataset.libraryFilterGroup = 'shelf';
+			link.dataset.libraryFilter = slug;
+			link.textContent = terms[ slug ].name;
+			count.dataset.catalogCount = 'shelf-' + slug;
+			count.textContent = '--';
+			link.appendChild( count );
+			container.appendChild( link );
 		} );
 	}
 
@@ -307,6 +361,11 @@
 
 	function initFilters() {
 		document.querySelectorAll( '[data-library-filter][data-library-filter-group]' ).forEach( function( filter ) {
+			if ( filter.dataset.ready ) {
+				return;
+			}
+
+			filter.dataset.ready = 'true';
 			filter.addEventListener( 'click', function( event ) {
 				var group = filter.dataset.libraryFilterGroup;
 
@@ -381,6 +440,8 @@
 		} )
 			.done( function( posts ) {
 				catalogPosts = Array.isArray( posts ) ? posts : [];
+				renderTaxonomyFilters();
+				initFilters();
 				updateCounts();
 				renderCatalog( catalogPosts );
 				initSearch( endpoint, perPage );

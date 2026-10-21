@@ -78,6 +78,14 @@
 						data-library-filter="dificil"><?php esc_html_e('Difícil', 'sinapsis_theme'); ?><span
 							data-catalog-count="difficulty-dificil">--</span></a>
 				</nav>
+				<nav class="library-sidebar__nav d-flex flex-column gap-1"
+					aria-label="<?php esc_attr_e('Categorías de librería', 'sinapsis_theme'); ?>"
+					data-library-taxonomy-filters>
+					<span class="library-sidebar__label"><?php esc_html_e('Categorías', 'sinapsis_theme'); ?></span>
+					<a class="is-active" href="#library-catalog" data-library-filter-group="shelf"
+						data-library-filter="all"><?php esc_html_e('Todas las categorías', 'sinapsis_theme'); ?><span
+							data-catalog-count="shelf-all">--</span></a>
+				</nav>
 
 				<div class="favorite-dropzone mt-auto">
 					<span
