@@ -186,6 +186,7 @@ a:visited {
 	gap: 0.35rem;
 	padding: 1rem 0.5rem;
 	text-align: center;
+	will-change: transform;
 }
 
 .favorite-dropzone__box strong {
@@ -369,6 +370,7 @@ a:visited {
 	border: 1px solid var(--sinapsis-border);
 	border-radius: 0.45rem;
 	min-width: 0;
+	will-change: opacity, transform;
 }
 
 .library-item[open] {

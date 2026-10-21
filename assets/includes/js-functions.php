@@ -26,6 +26,14 @@ function sinapsis_theme_enqueue_scripts() {
 	);
 
 	wp_enqueue_script(
+		'sinapsis-theme-anime',
+		'https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js',
+		array(),
+		'3.2.2',
+		true
+	);
+
+	wp_enqueue_script(
 		'sinapsis-theme-site',
 		get_template_directory_uri() . '/assets/librerias/js/sinapsis-site.js',
 		array( 'jquery' ),
@@ -47,6 +55,14 @@ function sinapsis_theme_enqueue_scripts() {
 	array( 'jquery' ),
 	_S_VERSION,
 	true
+	);
+
+	wp_enqueue_script(
+		'sinapsis-theme-animations',
+		get_template_directory_uri() . '/assets/librerias/js/sinapsis-animations.js',
+		array( 'sinapsis-theme-anime', 'sinapsis-theme-site', 'sinapsis-theme-rest' ),
+		_S_VERSION,
+		true
 	);
 
 	wp_localize_script(
