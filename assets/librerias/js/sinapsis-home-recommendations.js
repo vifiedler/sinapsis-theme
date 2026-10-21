@@ -23,20 +23,41 @@
 		return item;
 	}
 
+	function ensureJqueryType() {
+		if ( typeof $.type === 'function' ) {
+			return;
+		}
+
+		$.type = function( value ) {
+			if ( value === null ) {
+				return 'null';
+			}
+			if ( Array.isArray( value ) ) {
+				return 'array';
+			}
+			return typeof value;
+		};
+	}
+
 	function render( posts, carousel ) {
 		carousel.empty();
 		posts.forEach( function( post ) {
 			carousel.append( card( post ) );
 		} );
 		if ( posts.length ) {
+			ensureJqueryType();
 			carousel.slick( {
 				autoplay: true,
-				autoplaySpeed: 3500,
+				autoplaySpeed: 0,
+				cssEase: 'linear',
 				dots: true,
-				infinite: posts.length > 3,
+				infinite: posts.length > 1,
+				pauseOnFocus: false,
+				pauseOnHover: false,
 				slidesToShow: 3,
 				slidesToScroll: 1,
-				speed: 500,
+				speed: 9000,
+				waitForAnimate: false,
 				responsive: [
 					{ breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 1 } },
 					{ breakpoint: 600, settings: { slidesToShow: 1, slidesToScroll: 1 } },
