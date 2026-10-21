@@ -13,13 +13,19 @@ entradas y sus campos se gestionan con Secure Custom Fields (SCF).
 - `inc/rest-fields.php`: representación REST de los campos SCF.
 - `assets/librerias/css/`: estilos propios del proyecto.
 - `assets/librerias/js/sinapsis-site.js`: interacción visual, drag and drop y favoritos.
-- `assets/librerias/js/sinapsis-rest.js`: cliente REST mediante jQuery
-  `$.ajax()`, respuestas JSON y renderizado.
+- `assets/librerias/js/sinapsis-rest.js`: cliente REST mediante `fetch()`,
+  respuestas JSON validadas y renderizado.
 
 El cliente REST calcula los contadores de Plugins y Librerías a partir de las
 categorías de cada entrada. Los enlaces de la barra lateral filtran el catálogo
 sin recargar la página. El buscador consulta el endpoint de entradas con el
 parámetro REST `search` y combina sus resultados con el filtro seleccionado.
+
+Las peticiones dinámicas del catálogo, detalle, favoritos y recomendaciones
+usan `fetch()` con la cabecera `Accept: application/json`. El cliente valida
+el código HTTP y el encabezado `Content-Type` antes de ejecutar `response.json()`;
+una respuesta HTML o cualquier otro formato se muestra como error y no se
+procesa como datos válidos.
 
 SCF ya expone los campos en la API REST. El tema no registra endpoints propios:
 las plantillas PHP consumen los mismos campos mediante las funciones de SCF y

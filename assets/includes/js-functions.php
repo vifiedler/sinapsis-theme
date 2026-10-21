@@ -63,7 +63,7 @@ function sinapsis_theme_enqueue_scripts() {
 		wp_enqueue_script(
 			'sinapsis-theme-recommendations',
 			get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendations.js',
-			array( 'jquery', 'sinapsis-theme-recommendation-engine' ),
+			array( 'sinapsis-theme-rest', 'sinapsis-theme-recommendation-engine' ),
 			_S_VERSION,
 			true
 		);
@@ -81,7 +81,7 @@ function sinapsis_theme_enqueue_scripts() {
 		wp_enqueue_script(
 			'sinapsis-theme-home-recommendations',
 			get_template_directory_uri() . '/assets/librerias/js/sinapsis-home-recommendations.js',
-			array( 'jquery', 'sinapsis-theme-slick', 'sinapsis-theme-recommendation-engine' ),
+			array( 'jquery', 'sinapsis-theme-slick', 'sinapsis-theme-rest', 'sinapsis-theme-recommendation-engine' ),
 			_S_VERSION,
 			true
 		);

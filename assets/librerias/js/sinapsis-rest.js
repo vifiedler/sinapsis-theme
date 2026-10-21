@@ -23,11 +23,26 @@
 	}
 
 	function requestJson( url, data ) {
-		return window.jQuery.ajax( {
-			url: url,
+		var query = new URLSearchParams( data || {} );
+		var requestUrl = url + ( query.toString() ? ( url.indexOf( '?' ) === -1 ? '?' : '&' ) + query.toString() : '' );
+
+		return window.fetch( requestUrl, {
 			method: 'GET',
-			data: data || {},
-			dataType: 'json',
+			headers: {
+				Accept: 'application/json',
+			},
+		} ).then( function( response ) {
+			var contentType = response.headers.get( 'content-type' ) || '';
+
+			if ( ! response.ok ) {
+				throw new Error( 'REST respondió con HTTP ' + response.status + '.' );
+			}
+
+			if ( contentType.indexOf( 'application/json' ) === -1 ) {
+				throw new Error( 'REST respondió con un contenido que no es JSON.' );
+			}
+
+			return response.json();
 		} );
 	}
 
@@ -408,17 +423,17 @@
 					search: value,
 					per_page: perPage,
 					_embed: true,
-				} ).done( function( posts ) {
+				} ).then( function( posts ) {
 					if ( requestId !== searchRequest ) {
 						return;
 					}
 					activeSearch = value;
 					renderCatalog( Array.isArray( posts ) ? posts : [] );
-				} ).fail( function( xhr, status, error ) {
+				} ).catch( function( error ) {
 					if ( requestId !== searchRequest ) {
 						return;
 					}
-					console.error( 'Error buscando módulos en REST:', status, error, xhr.status );
+					console.error( 'Error buscando módulos en REST:', error );
 					showCatalogError( document.getElementById( 'library-catalog' ) );
 				} );
 			}, 300 );
@@ -438,7 +453,7 @@
 			per_page: perPage,
 			_embed: true,
 		} )
-			.done( function( posts ) {
+			.then( function( posts ) {
 				catalogPosts = Array.isArray( posts ) ? posts : [];
 				renderTaxonomyFilters();
 				initFilters();
@@ -446,8 +461,8 @@
 				renderCatalog( catalogPosts );
 				initSearch( endpoint, perPage );
 			} )
-			.fail( function( xhr, status, error ) {
-				console.error( 'Error cargando el catálogo REST:', status, error, xhr.status );
+			.catch( function( error ) {
+				console.error( 'Error cargando el catálogo REST:', error );
 				showCatalogError( container );
 			} );
 	}
@@ -459,8 +474,10 @@
 			return;
 		}
 
-		requestJson( config.postsUrl + '/' + encodeURIComponent( article.dataset.restPostId ) + '?_embed' )
-			.done( function( post ) {
+		requestJson( config.postsUrl + '/' + encodeURIComponent( article.dataset.restPostId ), {
+			_embed: true,
+		} )
+			.then( function( post ) {
 				var data = resourceData( post );
 				var content = article.querySelector( '.library-entry__content' );
 
@@ -468,8 +485,8 @@
 				addTextContent( content, data.description, 'library-entry__description mb-4' );
 				addDetailSections( content, post, data );
 			} )
-			.fail( function( xhr, status, error ) {
-				console.error( 'Error cargando el detalle REST:', status, error, xhr.status );
+			.catch( function( error ) {
+				console.error( 'Error cargando el detalle REST:', error );
 				var content = article.querySelector( '.library-entry__content' );
 
 				if ( content ) {
@@ -481,4 +498,8 @@
 	initFilters();
 	loadCatalog();
 	loadSingleEntry();
+
+	window.SinapsisRestClient = {
+		requestJson: requestJson,
+	};
 }() );

@@ -5,15 +5,6 @@
 	var maxRecommendations = 6;
 	var engine = window.SinapsisRecommendationEngine;
 
-	function requestJson( url, data ) {
-		return window.jQuery.ajax( {
-			url: url,
-			method: 'GET',
-			data: data || {},
-			dataType: 'json',
-		} );
-	}
-
 	function renderMessage( container, message ) {
 		var paragraph;
 
@@ -99,11 +90,11 @@
 			return;
 		}
 
-		requestJson( endpoint, {
+		window.SinapsisRestClient.requestJson( endpoint, {
 			include: favoriteIds.join( ',' ),
 			per_page: favoriteIds.length,
 			_embed: true,
-		} ).done( function( favoritePosts ) {
+		} ).then( function( favoritePosts ) {
 			if ( ! Array.isArray( favoritePosts ) || ! favoritePosts.length ) {
 				renderMessage( favoritesContainer, 'Los favoritos guardados ya no existen en el catálogo.' );
 				renderMessage( recommendationsContainer, 'No se encontraron datos para tus favoritos.' );
@@ -115,7 +106,7 @@
 				return;
 			}
 
-			requestJson( endpoint, { per_page: 100, _embed: true } ).done( function( allPosts ) {
+			window.SinapsisRestClient.requestJson( endpoint, { per_page: 100, _embed: true } ).then( function( allPosts ) {
 				var recommendations = engine.personalizedPosts(
 					Array.isArray( allPosts ) ? allPosts : [],
 					favoritePosts,
@@ -127,8 +118,12 @@
 					return;
 				}
 				renderPosts( recommendationsContainer, recommendations );
+			} ).catch( function( error ) {
+				console.error( 'Error al cargar recomendaciones:', error );
+				renderMessage( recommendationsContainer, 'Error al cargar recomendaciones.' );
 			} );
-		} ).fail( function() {
+		} ).catch( function( error ) {
+			console.error( 'Error al cargar favoritos:', error );
 			renderMessage( favoritesContainer, 'Error al cargar favoritos.' );
 			renderMessage( recommendationsContainer, 'Error al cargar recomendaciones.' );
 		} );

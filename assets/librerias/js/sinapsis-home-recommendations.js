@@ -80,7 +80,7 @@
 			return;
 		}
 		endpoint = section.dataset.recommendationsEndpoint;
-		$.getJSON( endpoint, { per_page: 100, _embed: true } ).done( function( posts ) {
+		window.SinapsisRestClient.requestJson( endpoint, { per_page: 100, _embed: true } ).then( function( posts ) {
 			var favorites = engine.readFavorites( storageKey );
 			var favoriteIds = {};
 			var available = ( Array.isArray( posts ) ? posts : [] );
@@ -101,8 +101,8 @@
 				return;
 			}
 
-			$.getJSON( endpoint, { include: Object.keys( favoriteIds ).join( ',' ), per_page: favorites.length, _embed: true } )
-				.done( function( favoritePosts ) {
+			window.SinapsisRestClient.requestJson( endpoint, { include: Object.keys( favoriteIds ).join( ',' ), per_page: favorites.length, _embed: true } )
+				.then( function( favoritePosts ) {
 					var recommendations = engine.personalizedPosts(
 						available,
 						Array.isArray( favoritePosts ) ? favoritePosts : [],
@@ -115,14 +115,16 @@
 
 					render( recommendations.length ? recommendations : engine.randomPosts( available, maxRecommendations ), carousel );
 				} )
-				.fail( function() {
+				.catch( function( error ) {
+					console.error( 'Error cargando favoritos para recomendaciones:', error );
 					if ( currentSequence !== loadSequence ) {
 						return;
 					}
 
 					render( engine.randomPosts( available, maxRecommendations ), carousel );
 				} );
-		} ).fail( function() {
+		} ).catch( function( error ) {
+			console.error( 'Error cargando recomendaciones:', error );
 			if ( currentSequence !== loadSequence ) {
 				return;
 			}
