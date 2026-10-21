@@ -52,6 +52,17 @@
 		container.appendChild( installation );
 	}
 
+	function shortDescription( value, maxLength ) {
+		var description = String( value || '' ).trim();
+		var suffix = '...';
+
+		if ( description.length <= maxLength ) {
+			return description;
+		}
+
+		return description.slice( 0, maxLength - suffix.length ).trimEnd() + suffix;
+	}
+
 	function resourceData( post ) {
 		var data = post.sinapsis || post.acf || {};
 		var terms;
@@ -173,33 +184,24 @@
 	}
 
 	function addDetailSections( container, post, data ) {
-		var installationRow = document.createElement( 'div' );
 		var content = document.createElement( 'div' );
 
-		installationRow.className = 'library-detail__installation row g-4';
-		content.className = 'library-detail__content col-12 col-lg';
-		addTextContent( content, post.content && post.content.rendered ? post.content.rendered.replace( /<[^>]*>/g, '' ) : '' );
+		content.className = 'library-detail__content';
+
+		if ( imageUrl( data.image ) ) {
+			var image = document.createElement( 'img' );
+
+			image.className = 'library-detail__image rounded border';
+			image.src = imageUrl( data.image );
+			image.alt = post.title.rendered;
+			image.loading = 'lazy';
+			content.appendChild( image );
+		}
 
 		if ( data.installation ) {
 			content.appendChild( textNode( 'h3', '', data.installation_title || 'Instalación' ) );
 			addInstallationText( content, data.installation );
 		}
-
-		installationRow.appendChild( content );
-
-		if ( imageUrl( data.image ) ) {
-			var imageColumn = textNode( 'div', 'library-detail__image col-12 col-lg-4', '' );
-			var image = document.createElement( 'img' );
-
-			image.className = 'img-fluid rounded border';
-			image.src = imageUrl( data.image );
-			image.alt = post.title.rendered;
-			image.loading = 'lazy';
-			imageColumn.appendChild( image );
-			installationRow.appendChild( imageColumn );
-		}
-
-		container.appendChild( installationRow );
 
 		if ( data.example_code ) {
 			var codeBox = textNode( 'div', 'library-detail__code', '' );
@@ -209,7 +211,7 @@
 			pre.className = 'mb-0';
 			pre.appendChild( textNode( 'code', '', data.example_code ) );
 			codeBox.appendChild( pre );
-			container.appendChild( codeBox );
+			content.appendChild( codeBox );
 		}
 
 		if ( data.link ) {
@@ -222,8 +224,10 @@
 			link.target = '_blank';
 			link.textContent = 'Visitar recurso';
 			linkBox.appendChild( link );
-			container.appendChild( linkBox );
+			content.appendChild( linkBox );
 		}
+
+		container.appendChild( content );
 	}
 
 	function createCard( post ) {
@@ -250,7 +254,7 @@
 		level.appendChild( textNode( 'span', '', 'NIVEL:' ) );
 		level.appendChild( document.createTextNode( ' ' + ( data.difficulty || 'No especificada' ) ) );
 		summary.appendChild( level );
-		summary.appendChild( textNode( 'p', '', data.description || 'Sin descripción disponible.' ) );
+		summary.appendChild( textNode( 'p', '', shortDescription( data.description || 'Sin descripción disponible.', 50 ) ) );
 		footer.className = 'library-card__footer d-flex justify-content-between align-items-center mt-auto';
 		footer.appendChild( textNode( 'span', '', data.resource_type || 'Librería' ) );
 		footer.appendChild( textNode( 'span', 'show-label', 'Mostrar →' ) );
@@ -401,12 +405,6 @@
 
 				content.replaceChildren();
 				addTextContent( content, data.description, 'library-entry__description mb-4' );
-				if ( post.content && post.content.rendered ) {
-					var body = document.createElement( 'div' );
-					body.className = 'library-entry__body';
-					body.innerHTML = post.content.rendered;
-					content.appendChild( body );
-				}
 				addDetailSections( content, post, data );
 			} )
 			.fail( function( xhr, status, error ) {
