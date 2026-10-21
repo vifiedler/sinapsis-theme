@@ -34,7 +34,7 @@
 			<aside class="library-sidebar d-flex flex-column"
 				aria-label="<?php esc_attr_e('Filtros y favoritos', 'sinapsis_theme'); ?>">
 				<div class="library-sidebar__brand d-flex align-items-center">
-					<span class="library-sidebar__mark">∎</span>
+					<span class="library-sidebar__mark d-none">∎</span>
 					<span class="d-none"><?php esc_html_e('REGISTRY // FILTERS', 'sinapsis_theme'); ?></span>
 				</div>
 
