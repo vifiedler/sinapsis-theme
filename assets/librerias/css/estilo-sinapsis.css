@@ -256,8 +256,9 @@ a:visited {
 	margin-top: auto;
 	padding-top: 1rem;
 	position: sticky;
-	bottom: 0;
+	bottom: -2vh;
 	z-index: 20;
+	margin-bottom: 0;
 }
 
 .favorite-dropzone {
@@ -839,7 +840,7 @@ a:visited {
 	color: var(--sinapsis-violet);
 }
 
-.library-entry__content > pre,
+.library-entry__content>pre,
 .library-entry__content pre {
 	background: #09090b !important;
 	border: 1px solid var(--sinapsis-border);
@@ -849,7 +850,7 @@ a:visited {
 	padding: 1.25rem;
 }
 
-.library-entry__content > pre code,
+.library-entry__content>pre code,
 .library-entry__content pre code {
 	background: #09090b !important;
 	color: var(--sinapsis-green) !important;
