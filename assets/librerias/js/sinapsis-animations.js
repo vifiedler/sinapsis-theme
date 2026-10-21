@@ -24,16 +24,26 @@
 	}
 
 	function animateDetail( detail ) {
+		var detailHeight;
+
 		if ( ! detail ) {
 			return;
 		}
 
+		detailHeight = detail.scrollHeight;
+		detail.style.height = '0px';
+		detail.style.overflow = 'hidden';
 		anime( {
 			targets: detail,
 			opacity: [ 0, 1 ],
 			translateY: [ 12, 0 ],
-			duration: 300,
-			easing: 'easeOutCubic',
+			height: [ 0, detailHeight ],
+			duration: 520,
+			easing: 'easeOutQuart',
+			complete: function() {
+				detail.style.height = '';
+				detail.style.overflow = '';
+			},
 		} );
 	}
 
