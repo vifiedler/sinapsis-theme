@@ -252,9 +252,12 @@ a:visited {
 
 .library-sidebar__account-panel {
 	background: #0f0f12;
+	box-shadow: 0 -0.75rem 1.25rem rgb(15 15 18 / 85%);
 	flex-shrink: 0;
+	margin-left: -1.25rem;
+	margin-right: -1.25rem;
 	margin-top: auto;
-	padding-top: 1rem;
+	padding: 1rem 1.25rem 1.25rem;
 	position: sticky;
 	bottom: 0;
 	z-index: 20;
