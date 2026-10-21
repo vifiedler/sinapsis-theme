@@ -253,15 +253,16 @@ a:visited {
 .library-sidebar__account-panel {
 	background: #0f0f12;
 	box-shadow: 0 -0.75rem 1.25rem rgb(15 15 18 / 85%);
-	flex-shrink: 0;
-	margin-left: -1.25rem;
-	margin-right: -1.25rem;
-	margin-top: auto;
-	padding: 1rem 1.25rem 1.25rem;
-	position: sticky;
+	box-sizing: border-box;
 	bottom: 0;
-	z-index: 20;
 	height: 25vh;
+	left: 0;
+	overflow-y: auto;
+	padding: 1rem 1.25rem 1.25rem;
+	position: fixed;
+	right: auto;
+	width: var(--sinapsis-sidebar);
+	z-index: 20;
 }
 
 .favorite-dropzone {
@@ -957,7 +958,10 @@ a:visited {
 	}
 
 	.library-sidebar__account-panel {
+		height: auto;
+		overflow: visible;
 		position: static;
+		width: auto;
 	}
 
 	.favorite-dropzone {
