@@ -1,5 +1,5 @@
 <?php if ( is_front_page() ) : ?>
-	<?php get_template_part( 'modulos/loop-recomendaciones' ); ?>
+	<?php get_template_part( 'assets/modulos/loop-recomendaciones' ); ?>
 <?php endif; ?>
 
 <header class="catalog-header row align-items-end g-4">
