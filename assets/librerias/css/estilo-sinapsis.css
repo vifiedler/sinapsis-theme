@@ -152,7 +152,7 @@ a:visited {
 	left: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
-	padding: 1.25rem 1.25rem 13rem;
+	padding: 1.25rem;
 	position: fixed;
 	top: 0;
 	width: var(--sinapsis-sidebar);
@@ -252,12 +252,13 @@ a:visited {
 
 .favorite-dropzone {
 	border-top: 1px solid var(--sinapsis-border);
-	bottom: 4.75rem;
-	left: 1.25rem;
-	margin-top: 0;
+	background: #0f0f12;
+	flex-shrink: 0;
+	margin-top: 1rem;
 	padding-top: 1rem;
-	position: absolute;
-	right: 1.25rem;
+	position: sticky;
+	bottom: 4.75rem;
+	z-index: 20;
 }
 
 .favorite-dropzone__box {
@@ -294,16 +295,17 @@ a:visited {
 
 .library-user-link {
 	align-items: center;
+	background: #0f0f12;
 	border-top: 1px solid var(--sinapsis-border);
 	display: flex;
 	gap: 0.65rem;
-	left: 1.25rem;
-	margin-top: 0;
+	flex-shrink: 0;
+	margin-top: 1rem;
 	padding-top: 1rem;
-	position: absolute;
-	right: 1.25rem;
+	position: sticky;
 	bottom: 1.25rem;
 	text-decoration: none;
+	z-index: 21;
 }
 
 .user-avatar {
@@ -951,9 +953,7 @@ a:visited {
 
 	.favorite-dropzone,
 	.library-user-link {
-		left: auto;
 		position: static;
-		right: auto;
 	}
 
 	.favorite-dropzone {
