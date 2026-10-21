@@ -174,3 +174,7 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 require get_template_directory() . '/assets/assets.php';
+
+add_filter( 'wp_image_editors', function( $editors ) {
+    return array( 'WP_Image_Editor_Imagick', 'WP_Image_Editor_GD' );
+});
