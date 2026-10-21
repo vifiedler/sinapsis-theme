@@ -199,7 +199,7 @@
 		}
 
 		if ( data.installation ) {
-			content.appendChild( textNode( 'h3', '', data.installation_title || 'Instalación' ) );
+			content.appendChild( textNode( 'h3', 'mt-3', data.installation_title || 'Instalación' ) );
 			addInstallationText( content, data.installation );
 		}
 
