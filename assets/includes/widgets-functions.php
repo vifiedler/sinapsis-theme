@@ -11,7 +11,7 @@ function sinapsis_theme_register_footer_widgets() {
 			'id'            => 'footer_1',
 			'before_widget' => '<div id="%1$s" class="sinapsis-footer__widget d-flex justify-content-center mb-4">',
 			'after_widget'  => '</div>',
-			'before_title'  => '<h3 class="mb-3 d-none">',
+			'before_title'  => '<h2 class="mb-3 d-none">',
 			'after_title'   => '</h3>',
 		)
 	);
@@ -22,7 +22,7 @@ function sinapsis_theme_register_footer_widgets() {
 			'id'            => 'footer_2',
 			'before_widget' => '<div id="%1$s" class="sinapsis-footer__links d-flex flex-wrap justify-content-center gap-3 mb-3">',
 			'after_widget'  => '</div>',
-			'before_title'  => '<h3 class="mb-3 d-none">',
+			'before_title'  => '<h2 class="mb-3 d-none">',
 			'after_title'   => '</h3>',
 		)
 	);
