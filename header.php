@@ -18,7 +18,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
-	<?php wp_head(); ?>
+	<?php
+	ob_start();
+	wp_head();
+	echo sinapsis_theme_normalize_head_void_elements( ob_get_clean() );
+	?>
 </head>
 
 <body <?php body_class(); ?>>
