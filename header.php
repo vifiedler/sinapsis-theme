@@ -35,7 +35,7 @@
 				aria-label="<?php esc_attr_e('Filtros y favoritos', 'sinapsis_theme'); ?>">
 				<div class="library-sidebar__brand d-flex align-items-center">
 					<span class="library-sidebar__mark">∎</span>
-					<span><?php esc_html_e('REGISTRY // FILTERS', 'sinapsis_theme'); ?></span>
+					<span class="d-none"><?php esc_html_e('REGISTRY // FILTERS', 'sinapsis_theme'); ?></span>
 				</div>
 
 				<form class="library-search w-100" role="search" method="get" data-library-search-form
