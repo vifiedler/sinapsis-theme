@@ -150,7 +150,9 @@ a:visited {
 	display: flex;
 	flex-direction: column;
 	left: 0;
-	padding: 1.25rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 1.25rem 1.25rem 13rem;
 	position: fixed;
 	top: 0;
 	width: var(--sinapsis-sidebar);
@@ -250,8 +252,12 @@ a:visited {
 
 .favorite-dropzone {
 	border-top: 1px solid var(--sinapsis-border);
-	margin-top: auto;
+	bottom: 4.75rem;
+	left: 1.25rem;
+	margin-top: 0;
 	padding-top: 1rem;
+	position: absolute;
+	right: 1.25rem;
 }
 
 .favorite-dropzone__box {
@@ -261,6 +267,8 @@ a:visited {
 	display: flex;
 	flex-direction: column;
 	gap: 0.35rem;
+	max-height: 10rem;
+	overflow-y: auto;
 	padding: 1rem 0.5rem;
 	text-align: center;
 	transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
@@ -289,8 +297,12 @@ a:visited {
 	border-top: 1px solid var(--sinapsis-border);
 	display: flex;
 	gap: 0.65rem;
-	margin-top: 1rem;
+	left: 1.25rem;
+	margin-top: 0;
 	padding-top: 1rem;
+	position: absolute;
+	right: 1.25rem;
+	bottom: 1.25rem;
 	text-decoration: none;
 }
 
@@ -932,8 +944,24 @@ a:visited {
 
 @media (max-width: 640px) {
 	.library-sidebar {
+		overflow: visible;
 		position: static;
 		width: 100%;
+	}
+
+	.favorite-dropzone,
+	.library-user-link {
+		left: auto;
+		position: static;
+		right: auto;
+	}
+
+	.favorite-dropzone {
+		margin-top: 1rem;
+	}
+
+	.library-user-link {
+		margin-top: 1rem;
 	}
 
 	.library-shell {
