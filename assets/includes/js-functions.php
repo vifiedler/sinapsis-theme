@@ -41,6 +41,16 @@ function sinapsis_theme_enqueue_scripts() {
 		true
 	);
 
+	if ( is_front_page() || is_page_template( 'page-home.php' ) || is_page_template( 'page-usuario.php' ) ) {
+		wp_enqueue_script(
+			'sinapsis-theme-recommendation-engine',
+			get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendation-engine.js',
+			array(),
+			_S_VERSION,
+			true
+		);
+	}
+
 	wp_enqueue_script(
 		'sinapsis-theme-rest',
 		get_template_directory_uri() . '/assets/librerias/js/sinapsis-rest.js',
@@ -49,30 +59,32 @@ function sinapsis_theme_enqueue_scripts() {
 		true
 	);
 
-	wp_enqueue_script(
-	'sinapsis-theme-recommendations',
-	get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendations.js',
-	array( 'jquery' ),
-	_S_VERSION,
-	true
-	);
+	if ( is_page_template( 'page-usuario.php' ) ) {
+		wp_enqueue_script(
+			'sinapsis-theme-recommendations',
+			get_template_directory_uri() . '/assets/librerias/js/sinapsis-recommendations.js',
+			array( 'jquery', 'sinapsis-theme-recommendation-engine' ),
+			_S_VERSION,
+			true
+		);
+	}
 
 	if ( is_front_page() || is_page_template( 'page-home.php' ) ) {
-	wp_enqueue_script(
-		'sinapsis-theme-slick',
-		'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
-		array( 'jquery' ),
-		'1.8.1',
-		true
-	);
+		wp_enqueue_script(
+			'sinapsis-theme-slick',
+			'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
+			array( 'jquery' ),
+			'1.8.1',
+			true
+		);
 
-	wp_enqueue_script(
-		'sinapsis-theme-home-recommendations',
-		get_template_directory_uri() . '/assets/librerias/js/sinapsis-home-recommendations.js',
-		array( 'jquery', 'sinapsis-theme-slick' ),
-		_S_VERSION,
-		true
-	);
+		wp_enqueue_script(
+			'sinapsis-theme-home-recommendations',
+			get_template_directory_uri() . '/assets/librerias/js/sinapsis-home-recommendations.js',
+			array( 'jquery', 'sinapsis-theme-slick', 'sinapsis-theme-recommendation-engine' ),
+			_S_VERSION,
+			true
+		);
 	}
 
 	wp_enqueue_script(

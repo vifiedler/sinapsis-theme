@@ -1,9 +1,3 @@
-.library-grid {
-	display: grid;
-	gap: 2rem;
-	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-}
-
 .home-recommendations {
 	background: var(--sinapsis-surface);
 	border: 1px solid var(--sinapsis-border);
@@ -97,33 +91,6 @@
 
 .home-recommendations .slick-dots li button:before {
 	color: var(--sinapsis-violet);
-}
-
-.library-card {
-	border: 1px solid #ddd;
-	border-radius: 0.5rem;
-	overflow: hidden;
-}
-
-.library-card__image {
-	display: block;
-}
-
-.library-card__image img {
-	display: block;
-	height: auto;
-	width: 100%;
-}
-
-.library-card__content {
-	padding: 1.25rem;
-}
-
-.library-card__difficulty {
-	display: inline-block;
-	font-size: 0.875rem;
-	font-weight: 600;
-	margin-bottom: 0.75rem;
 }
 
 :root {
@@ -819,14 +786,6 @@ a:visited {
 	margin: 0;
 }
 
-.library-entry__image img {
-	background: var(--sinapsis-surface);
-	border-color: var(--sinapsis-border) !important;
-	max-height: 28rem;
-	object-fit: contain;
-	width: auto;
-}
-
 .library-entry__content {
 	color: var(--sinapsis-text);
 	font-size: 1rem;
@@ -869,35 +828,15 @@ a:visited {
 	white-space: pre-wrap;
 }
 
-.library-entry__content h2,
-.library-entry__section h2 {
+.library-entry__content h2 {
 	color: var(--sinapsis-text);
 	font-size: clamp(1.35rem, 2vw, 2rem);
 	letter-spacing: -0.025em;
 	margin-bottom: 0.8rem;
 }
 
-.library-entry__description,
-.library-entry__formatted-content {
+.library-entry__description {
 	color: var(--sinapsis-muted);
-}
-
-.library-entry__code {
-	background: #09090b;
-	border: 1px solid var(--sinapsis-border);
-	border-radius: 0.35rem;
-	overflow-x: auto;
-	padding: 1.25rem;
-}
-
-.library-entry__code pre,
-.library-entry__code code {
-	background: #09090b !important;
-	color: var(--sinapsis-green) !important;
-	font-family: Consolas, "Cascadia Code", "Courier New", monospace;
-	font-size: 0.78rem;
-	line-height: 1.65;
-	white-space: pre-wrap;
 }
 
 .library-entry__navigation {

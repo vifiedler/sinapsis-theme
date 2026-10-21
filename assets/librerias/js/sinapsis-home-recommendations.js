@@ -2,88 +2,11 @@
 	'use strict';
 
 	var storageKey = 'sinapsis_favoritos';
-	var endpoint;
+	var engine = window.SinapsisRecommendationEngine;
 	var maxRecommendations = 6;
 
-	function readFavorites() {
-		try {
-			return JSON.parse( localStorage.getItem( storageKey ) || '[]' );
-		} catch ( error ) {
-			console.error( 'No fue posible leer los favoritos:', error );
-			return [];
-		}
-	}
-
-	function dataFor( post ) {
-		return post.sinapsis || post.acf || {};
-	}
-
-	function normalize( value ) {
-		return String( value || '' ).toLowerCase()
-			.replace( /[áàäâ]/g, 'a' )
-			.replace( /[éèëê]/g, 'e' )
-			.replace( /[íìïî]/g, 'i' )
-			.replace( /[óòöô]/g, 'o' )
-			.replace( /[úùüû]/g, 'u' )
-			.replace( /ñ/g, 'n' )
-			.trim();
-	}
-
-	function termIds( post, taxonomy ) {
-		var ids = [];
-
-		( post._embedded && post._embedded['wp:term'] || [] ).forEach( function( group ) {
-			group.forEach( function( term ) {
-				if ( term.taxonomy === taxonomy ) {
-					ids.push( term.id );
-				}
-			} );
-		} );
-		return ids;
-	}
-
-	function profileFor( posts ) {
-		var profile = { categories: {}, difficulties: {}, types: {} };
-
-		posts.forEach( function( post ) {
-			var data = dataFor( post );
-
-			termIds( post, 'categoria-libreria' ).concat( termIds( post, 'category' ) ).forEach( function( id ) {
-				profile.categories[ id ] = ( profile.categories[ id ] || 0 ) + 1;
-			} );
-			if ( data.difficulty ) {
-				profile.difficulties[ normalize( data.difficulty ) ] = ( profile.difficulties[ normalize( data.difficulty ) ] || 0 ) + 1;
-			}
-			if ( data.resource_type ) {
-				profile.types[ normalize( data.resource_type ) ] = ( profile.types[ normalize( data.resource_type ) ] || 0 ) + 1;
-			}
-		} );
-		return profile;
-	}
-
-	function score( post, profile ) {
-		var data = dataFor( post );
-		var value = 0;
-
-		termIds( post, 'categoria-libreria' ).forEach( function( id ) {
-			value += ( profile.categories[ id ] || 0 ) * 3;
-		} );
-		termIds( post, 'category' ).forEach( function( id ) {
-			value += ( profile.categories[ id ] || 0 ) * 2;
-		} );
-		value += ( profile.difficulties[ normalize( data.difficulty ) ] || 0 ) * 2;
-		value += ( profile.types[ normalize( data.resource_type ) ] || 0 );
-		return value;
-	}
-
-	function randomPosts( posts ) {
-		return posts.sort( function() {
-			return Math.random() - 0.5;
-		} ).slice( 0, 3 );
-	}
-
 	function card( post ) {
-		var data = dataFor( post );
+		var data = engine.resourceData( post );
 		var title = post.title && post.title.rendered ? post.title.rendered : 'Sin título';
 		var description = String( data.description || 'Sin descripción disponible.' ).trim();
 		var item = document.createElement( 'article' );
@@ -131,7 +54,7 @@
 		}
 		endpoint = section.dataset.recommendationsEndpoint;
 		$.getJSON( endpoint, { per_page: 100, _embed: true } ).done( function( posts ) {
-			var favorites = readFavorites();
+			var favorites = engine.readFavorites( storageKey );
 			var favoriteIds = {};
 			var available = ( Array.isArray( posts ) ? posts : [] );
 
@@ -143,24 +66,19 @@
 			} );
 
 			if ( section.dataset.userLoggedIn !== 'true' || ! favorites.length ) {
-				render( randomPosts( available ), carousel );
+				render( engine.randomPosts( available, maxRecommendations ), carousel );
 				return;
 			}
 
 			$.getJSON( endpoint, { include: Object.keys( favoriteIds ).join( ',' ), per_page: favorites.length, _embed: true } )
 				.done( function( favoritePosts ) {
-					var profile = profileFor( Array.isArray( favoritePosts ) ? favoritePosts : [] );
-					var recommendations = available.map( function( post ) {
-						return { post: post, score: score( post, profile ) };
-					} ).filter( function( entry ) {
-						return entry.score > 0;
-					} ).sort( function( a, b ) {
-						return b.score - a.score;
-					} ).slice( 0, maxRecommendations ).map( function( entry ) {
-						return entry.post;
-					} );
+					var recommendations = engine.personalizedPosts(
+						available,
+						Array.isArray( favoritePosts ) ? favoritePosts : [],
+						maxRecommendations
+					);
 
-					render( recommendations.length ? recommendations : randomPosts( available ), carousel );
+					render( recommendations.length ? recommendations : engine.randomPosts( available, maxRecommendations ), carousel );
 				} );
 		} ).fail( function() {
 			carousel.html( '<p class="catalog-status">No fue posible cargar las recomendaciones.</p>' );
